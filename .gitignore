@@ -4,6 +4,3 @@ venv/
 # Ignoră fișierele de bază ale Python
 backend/__pycache__/
 .vscode/
-
-# Ignoră fișierele de test
-testfiles/
