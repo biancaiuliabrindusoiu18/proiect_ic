@@ -20,6 +20,7 @@ def extract_text_from_pdf_text(pdf_path): # Extrage textul dintr-un PDF care con
 def extract_text_from_pdf_image(pdf_path): # Extrage textul dintr-un PDF care conține imagini
     images = convert_from_path(pdf_path)
     text = "\n".join([pytesseract.image_to_string(img) for img in images])
+    #text = "\n".join([pytesseract.image_to_string(img, lang="ron") for img in images])
     return text
 
 def pdf_to_text(pdf_path):  # Extrage textul dintr-un PDF
