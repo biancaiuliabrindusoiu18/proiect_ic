@@ -1,8 +1,15 @@
-# Ignoră mediul virtual
+# Ignore python virtual environments
 venv/
 
-# Ignoră fișierele de bază ale Python
-backend/__pycache__/
+# Ignore python cache files
+backend/python/__pycache__/
 
+# Ignore vscode and IDE files
 .vscode/
 .idea/
+
+# Ignore node modules and build files
+backend/node/node_modules/
+
+#ignore environment files
+backend/node/.env
