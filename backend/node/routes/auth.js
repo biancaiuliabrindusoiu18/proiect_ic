@@ -1,8 +1,14 @@
 const express = require('express');
 const jwt = require('jsonwebtoken');
-const User = require('../models/User');
 const router = express.Router();
 bcrypt = require('bcryptjs');
+const nodemailer = require('nodemailer');
+const crypto = require('crypto');
+const User = require('../models/User');
+
+        //const emailRegex = /^[a-zA-Z0-9._%+-]{6,30}@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+        //const phoneRegex = /^\+?[0-9]{10,15}$/; // Optional +, 10-15 digits  TBD
+        const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d.,!]{8,}$/; // Minimum 8 characters, at least one letter and one number
 
 // Register
 router.post('/register', async (req, res) => {
@@ -36,7 +42,8 @@ router.post('/register', async (req, res) => {
 
         // save the user to the database
         await user.save();
-                                    //choosing the option not to be logged in after registration
+        res.status(201).json({ msg: 'User registered successfully' });
+
     } catch (err) {
         console.error(err.message);
         res.status(500).send('Server error');
@@ -47,8 +54,7 @@ router.post('/register', async (req, res) => {
 router.post('/login', async (req, res) => {
         const { account, password, rememberMe } = req.body;
 
-        //const emailRegex = /^[a-zA-Z0-9._%+-]{6,30}@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
-        //const phoneRegex = /^\+?[0-9]{10,15}$/; // Optional +, 10-15 digits  TBD
+
 
         // Validate email or phone and password
         if (!account || !password) {
@@ -81,11 +87,88 @@ router.post('/login', async (req, res) => {
         const token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn });// Sign the token with a secret key and set expiration time
 
         res.json({ token });
-
     } catch (err) {
         console.error(err.message);
         res.status(500).send('Server error');
     }
-    });
+});
+
+// Forgot Password
+router.post('/forgot-password', async (req, res) => {
+    const { account } = req.body;
+  
+    if (!account) return res.status(400).json({ msg: 'Email is required.' });
+  
+    try {
+      const user = await User.findOne({ email: account });
+      if (user) {
+  
+        const resetToken = crypto.randomBytes(20).toString('hex');
+        const hashedToken = crypto.createHash('sha256').update(resetToken).digest('hex');
+        
+        user.resetPasswordToken = hashedToken;
+        user.resetPasswordExpire = Date.now() + 10 * 60 * 1000;
+        await user.save({ validateBeforeSave: false });        
+  
+        // Create a reset URL
+        const resetUrl = `http://localhost:3000/reset-password/${resetToken}`;
+    
+        // Send email with the reset link
+        const transporter = nodemailer.createTransport({
+            service: 'Gmail',
+            auth: {
+            user: process.env.EMAIL_USER,
+            pass: process.env.EMAIL_PASS
+            }
+        });
+  
+      await transporter.sendMail({
+        from: process.env.EMAIL_USER,
+        to: account,
+        subject: 'Password Reset Request',
+        html: `
+          <h3>Password Reset</h3>
+          <p>Click the link below to reset your password. It expires in 10 minutes:</p>
+          <a href="${resetUrl}">${resetUrl}</a>
+        `
+      });
+    }
+      res.json({ msg: 'If an account with that email exists, you’ll receive a password reset link shortly.' });
+    } catch (err) {
+      console.error(err.message);
+      res.status(500).send('Server error');
+    }
+});
+
+// Reset password using the generated token
+router.post('/reset-password/:token', async (req, res) => {
+    const { token } = req.params;
+    const { password } = req.body;
+
+    if (!password) return res.status(400).json({ msg: 'Password is required.' });
+  
+    try {
+       const hashedToken = crypto.createHash('sha256').update(token).digest('hex');
+      // Find user by resetPasswordToken and check if the token is still valid (not expired)
+      const user = await User.findOne({
+        resetPasswordToken: hashedToken,
+        resetPasswordExpire: { $gt: Date.now() }
+      });
+  
+      if (!user) return res.status(400).json({ msg: 'Invalid or expired token.' });
+  
+   
+      user.password = password; //hash password in the User model pre-save hook   ///MERGE DAR DOAR CAND ARE CHEF?? NU IMI DAU SEAMA PT CE NU MERGE
+      user.resetPasswordToken = undefined;  // Clear the reset token after reset
+      user.resetPasswordExpire = undefined; // Clear the expiration date
+      await user.save();
+  
+      res.json({ msg: 'Password has been successfully reset.' });
+    } catch (err) {
+      console.error(err.message);
+      res.status(500).send('Server error');
+    }
+});
+
 
     module.exports = router;

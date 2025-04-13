@@ -3,6 +3,7 @@ venv/
 
 # Ignore python cache files
 backend/python/__pycache__/
+backend/__pycache__/
 
 # Ignore vscode and IDE files
 .vscode/
