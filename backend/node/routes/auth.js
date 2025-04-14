@@ -9,7 +9,7 @@ const User = require('../models/User');
         //const emailRegex = /^[a-zA-Z0-9._%+-]{6,30}@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
         //const phoneRegex = /^\+?[0-9]{10,15}$/; // Optional +, 10-15 digits  TBD
         const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d.,!]{8,}$/; // Minimum 8 characters, at least one letter and one number
-
+                                                                        //NU MERG PAROLE CU .
 // Register
 router.post('/register', async (req, res) => {
     const { account, password, firstName, lastName } = req.body;
@@ -87,6 +87,7 @@ router.post('/login', async (req, res) => {
         const token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn });// Sign the token with a secret key and set expiration time
 
         res.json({ token });
+        console.log('Login successful:', user.first_name, user.last_name, user.email, user.phone);
     } catch (err) {
         console.error(err.message);
         res.status(500).send('Server error');
@@ -111,8 +112,8 @@ router.post('/forgot-password', async (req, res) => {
         await user.save({ validateBeforeSave: false });        
   
         // Create a reset URL
-        const resetUrl = `http://localhost:3000/reset-password/${resetToken}`;
-    
+        const resetUrl = `http://localhost:5173/reset-password/${resetToken}`;
+        
         // Send email with the reset link
         const transporter = nodemailer.createTransport({
             service: 'Gmail',
@@ -145,6 +146,9 @@ router.post('/reset-password/:token', async (req, res) => {
     const { token } = req.params;
     const { password } = req.body;
 
+    console.log('Token:', token);
+    console.log('Password:', password);
+    
     if (!password) return res.status(400).json({ msg: 'Password is required.' });
   
     try {
