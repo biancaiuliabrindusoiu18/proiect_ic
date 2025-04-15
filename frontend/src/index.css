@@ -1,0 +1,141 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+  font-size: 1.125rem; /* Changed to match Tailwind's base font size */
+
+  /* Changed to light theme by default */
+  color-scheme: light;
+  color: #213547;
+  background-color: #ffffff;
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+a {
+  font-weight: 500;
+  color: #4f46e5; /* Changed to match blue-600 from Tailwind */
+  text-decoration: inherit;
+}
+a:hover {
+  color: #4338ca; /* Changed to match blue-700 from Tailwind */
+}
+
+body {
+  margin: 0;
+  display: flex;
+  place-items: center;
+  min-width: 320px;
+  min-height: 100vh;
+  margin: 0;
+  height: 100%;
+  background-color: #ffffff;
+  }
+
+h1 {
+  font-size: 3.2em;
+  line-height: 1.1;
+  margin-top:0;
+  margin-bottom:0px;
+}
+
+button {
+  background : linear-gradient(135deg, #3B82F6 0%, #1E40AF 100%);
+  border:none;
+  border-radius: 12px;
+  box-shadow:0 2px 4px rgba(37,99,235,0.1);
+  color:#fff;
+  cursor:pointer;
+  font-family:"Inter",sans-serif;
+  font-size: 15px;
+  font-weight: 500;
+  letter-spacing: 0.3px;
+  overflow:hidden;
+  padding:16px;
+  position:relative;
+  transition: all 0.3s ease;
+  width:100%;
+
+}
+
+button.active {
+    background: linear-gradient(135deg, #2563EB 0%, #1E3A8A 100%);
+    box-shadow: 0 4px 8px rgba(30, 64, 175, 0.25), inset 0 0 0 2px rgba(255, 255, 255, 0.1);
+    transform: translateY(-1px);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    width:100%;
+
+}
+
+button.inactive{
+    background: linear-gradient(135deg, #90b2ea 0%, #7d95e3 100%);
+    box-shadow: 0 4px 8px rgba(30, 64, 175, 0.25), inset 0 0 0 2px rgba(255, 255, 255, 0.1);
+    transform: translateY(-1px);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    width:50%;
+    max-width: 100px;
+}
+
+button:hover {
+  border-color: #4f46e5;
+  border:#1E40AF;
+  box-shadow:0 4px 8px rgba(37,99,235,0.2);
+}
+
+button[type="currentButton"] {
+  background: linear-gradient(135deg, #030303 0%, #a3a5ab 100%);
+  color: #fff;
+  cursor: pointer;
+  font-family: "Inter", sans-serif;
+  font-size: 15px;
+  font-weight: 500;
+  letter-spacing: 0.3px;
+  overflow: hidden;
+  padding: 16px;
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+
+nav{
+  margin-bottom:8%;
+  margin-top:4%;
+  gap: 1rem  /*dintr-un motiv sau altul, nu merge in tailwind nicicum nimic legat de margin/gap*/
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+input[type="email"], input[type="password"], input [type="confirmPassword"], input[type="text"]{
+  padding: 10px;
+  border: 1px 1px solid #EAECEE;
+  border-radius: 2px;
+  font-family: "Inter", sans-serif;
+  width: 100%;
+}
+input[type="email"]:focus, input[type="password"]:focus, input[type="text"]:focus{
+  border-color: #3B82F6;
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.5);
+  border-radius:6px;
+}
+
+label[for="email"], label[for="password"], label[for="confirmPassword"], label[for="firstName"], label[for="lastName"],label[for="newPassword"] {
+  font-size: 0.8rem;
+  color: #374151; /* Changed to match gray-700 from Tailwind */
+}
+span[id="passwordHint"] {
+  margin-left:10px;
+  font-size: 0.8rem;
+  color: #0553ee; /* Changed to match gray-500 from Tailwind */
+}
