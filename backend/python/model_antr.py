@@ -9,9 +9,10 @@ import re
 from utils import pdf_to_text
 from sklearn.utils import shuffle
 
+import joblib
+
 # Definirea cuvintelor cheie pentru analiza medicală
 keywords_optional = [
-    "inregsitrat la", "recoltat la", "denumire analiza", "rezultat", "valori biologice de referinta",
     "hematologie", "biochimie serica", "exudat faringian", "markeri endocrini", "biochimie urinara", 
     "Biochimie sange", "Imunologie", "Markeri endocrini", "Biotoxicologie", "Histologie", "Biochimie urini", 
     "Virusologie", "Hematologie", "Markeri virali", "Boli autoimune", "Parazitologie", "Serologie", 
@@ -25,20 +26,37 @@ keywords_optional = [
     "Timpul de coagulare", "Albumina urinară", "Eritrocite sedimentate", "Leucocite", "Plachete"
 ]
 
+keywords_optional = [keyword.lower() for keyword in keywords_optional]
+
 # Preprocesare text pentru extragerea trăsăturilor
-def extract_features(text):
-    features = []
-    
-    # Căutăm numărul de cuvinte-cheie
-    optional_count = sum(1 for word in keywords_optional if word.lower() in text.lower())
-    features.append(optional_count)
-    
-    # Căutăm numerele urmate de unități de măsură (ex: 154 mg/dL)
-    pattern = r'\d+([\.,]?\d+)?\s*(mg/dL|mmol/L|U/L|ng/dL|mL|pg/mL|µmol/L|\%|\s*/mm³)'
-    numere = re.findall(pattern, text)
-    features.append(len(numere))  # Adăugăm câte numere cu unități de măsură sunt în text
-    
-    return features
+def extract_features(text: str):
+    text_lower = text.lower()
+    features = {}
+
+    features["nr_total_cuvinte"] = len(text_lower.split())
+    features["contine_buletin"] = int("buletin de analize" in text_lower or "buletin de rezultate" in text_lower)
+    features["contine_date_personale"] = int("nume" in text_lower and "prenume" in text_lower or "varsta" in text_lower 
+                                             or "adresa" in text_lower or "telefon" in text_lower
+                                             or "cod numeric personal" in text_lower or "cnp" in text_lower
+                                             or "sex" in text_lower or "data nasterii" in text_lower)
+    features["aparitie_denumire"] = int ("denumire analiza" in text_lower or "denumire" in text_lower)
+    features["aparitie_interval"] = int ("valori de referinta" in text_lower or "valori biologice de referinta" in text_lower)
+    features["recoltat"] = int("recoltat" in text_lower or "recoltare" in text_lower)
+    features["are_data"] = int(bool(re.search(r"\b\d{1,2}[./\\]?\d{1,2}[./\\]?\d{2,4}\b|"
+                                                r"\b\d{1,2}\s+(?:ianuarie|februarie|martie|aprilie|mai|iunie|iulie|august|septembrie|octombrie|noiembrie|decembrie|"
+                                                r"ian|feb|mar|apr|iun|iul|aug|sep|oct|nov|dec)\.?\s+\d{4}\b",
+                                                text_lower
+                                            )))
+
+
+    features["analize-denumiri"] = int(any(keyword in text_lower for keyword in keywords_optional))
+
+    unitati = ["mg/dl", "g/dl", "u/l", "µg/dl", "mmol/l", "ng/ml"]
+    features["nr_unitati_medicale"] = sum(text_lower.count(unit) for unit in unitati)
+    features["procent_unitati_medicale"] = features["nr_unitati_medicale"] / (features["nr_total_cuvinte"] + 1)
+
+    return list(features.values())
+
 
 # Încărcăm dataset-ul
 dataset = []
@@ -64,7 +82,7 @@ y = [item['class'] for item in dataset]
 # Împărțim în seturi de antrenament și testare
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.7, random_state=42)
 
-# Creăm un model de regresie logistică
+# Creăm un model de regresie logistică 0 sau 1 ptr clase 
 model = LogisticRegression()
 
 # Antrenăm modelul
@@ -83,3 +101,6 @@ print("Matricea de confuzie:")
 print(conf_matrix)
 print("Raportul de clasificare:")
 print(class_report)
+
+joblib.dump(model, "classifier.pkl")
+print("Modelul a fost salvat în classifier.pkl")
