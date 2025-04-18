@@ -8,10 +8,11 @@ import ResetPassword from './auth/ResetPassword';
 import HomePage from './HomePage';
 import RegistrationSuccess from './auth/RegisterSuccess';
 import Header from './components/Header';
+import LandingPage from './LandingPage';
 
 const Layout = ({ children }) => {
   const location = useLocation();
-  const hideHeaderRoutes = ['/login', '/register', '/forgot-password', '/reset-password/:token', '/register-success'];
+  const hideHeaderRoutes = ['/login', '/register', '/forgot-password', '/reset-password/:token', '/register-success','/'];
 
   const shouldHideHeader = hideHeaderRoutes.some((route) =>
     matchPath({ path: route, end: true }, location.pathname)
@@ -29,6 +30,7 @@ const App = () => {
     <Router>
       <Layout>
       <Routes>
+        <Route path="/" element={<LandingPage />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />\
         <Route path="/register-success" element={<RegistrationSuccess />} />
