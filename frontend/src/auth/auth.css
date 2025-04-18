@@ -1,0 +1,142 @@
+header {
+    display: flex;
+    flex-direction: column; /* Aliniază elementele pe verticală */
+    align-items: center; /* Centrează elementele pe axa orizontală */
+  }
+
+button {
+    background : linear-gradient(135deg, #3B82F6 0%, #1E40AF 100%);
+    border:none;
+    border-radius: 12px;
+    box-shadow:0 2px 4px rgba(37,99,235,0.1);
+    color:#fff;
+    cursor:pointer;
+    font-family:"Inter",sans-serif;
+    font-size: 15px;
+    font-weight: 500;
+    letter-spacing: 0.3px;
+    overflow:hidden;
+    padding:16px;
+    position:relative;
+    transition: all 0.3s ease;
+    width:100%;
+  
+  }
+  
+  button:hover {
+    border-color: #4f46e5;
+    border:#1E40AF;
+    box-shadow:0 4px 8px rgba(37,99,235,0.2);
+  }
+
+  button.active {
+      background: linear-gradient(135deg, #2563EB 0%, #1E3A8A 100%);
+      box-shadow: 0 4px 8px rgba(30, 64, 175, 0.25), inset 0 0 0 2px rgba(255, 255, 255, 0.1);
+      transform: translateY(-1px);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      width:100%;
+  
+  }
+  
+  button.inactive{
+      background: linear-gradient(135deg, #90b2ea 0%, #7d95e3 100%);
+      box-shadow: 0 4px 8px rgba(30, 64, 175, 0.25), inset 0 0 0 2px rgba(255, 255, 255, 0.1);
+      transform: translateY(-1px);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      width:50%;
+      max-width: 100px;
+  }
+  
+  nav{
+    display: flex;
+    justify-content: center;
+    margin-bottom:8%;
+    margin-top:4%;
+    gap: 1rem
+  }
+  
+  form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin-bottom: 2rem;
+  }
+  
+  input[type="email"], input[type="password"], input [type="confirmPassword"], input[type="text"]{
+    padding: 10px;
+    border: 1px solid #e2e8f0;       /* border + border-slate-200 */
+    border-radius: 0.5rem;           /* rounded-lg */
+    font-family: "Inter", sans-serif;
+    width: 100%;
+    transition: all 0.2s ease; 
+  }
+  input[type="email"]:focus, input[type="password"]:focus, input[type="text"]:focus{
+    border-color: #3B82F6;
+    box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.5);
+    border-radius:6px;
+  }
+  
+  label[for="email"], label[for="password"], label[for="confirmPassword"], label[for="firstName"], label[for="lastName"],label[for="newPassword"] {
+    display: flex;
+    font-size: 0.8rem;
+    color: #374151; /* Changed to match gray-700 from Tailwind */
+  }
+  span[id="passwordHint"] {
+    margin-left:10px;
+    font-size: 0.8rem;
+    color: #0553ee; /* Changed to match gray-500 from Tailwind */
+  }
+
+  /* Styling pentru secțiunea principală */
+section {
+    display: flex;
+    justify-content: center;
+    min-height: 100vh; /* Întreaga înălțime a ferestrei */
+  }
+  
+  /* Stilizarea pentru main */
+  main {
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05); /* Umbră */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-height: 80vh; /* 80% din înălțimea ferestrei */
+    min-width: 60vh; /* 60% din lățimea ferestrei */
+  }
+  
+  #whiteBox {
+    max-width: 90%; /* Lățimea maximă este 90% din lățimea containerului părinte */
+    margin: 0 auto; /* Centrarea pe orizontală */
+  }
+
+  .separator {
+    margin-bottom: 0.7rem;  /* echivalent cu mb-5 */
+    height: 1px;             /* linie subțire */
+    background-color: #e5e7eb; /* echivalent cu bg-gray-200 */
+  }
+
+  .error-message {
+    color: #ef4444;        /* roșu - Tailwind red-500 */
+    font-size: 0.875rem;   /* text-sm */
+    margin-bottom: 1rem;   /* mb-4 */
+    text-align: center;
+  }
+  .success-message {
+    color: #22c55e;        /* verde - Tailwind green-500 */
+    font-size: 0.875rem;   /* text-sm */
+    margin-bottom: 1rem;   /* mb-4 */
+    text-align: center;
+  }
+  
+  .auth-options {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .auth-options .remember-me, .auth-options .forgot-password {
+    font-size: 0.875rem; /* text-sm */
+    font-weight: 600;    /* font-semibold */
+    color: #a1a1aa;      /* text-zinc-400 */
+  }
+  

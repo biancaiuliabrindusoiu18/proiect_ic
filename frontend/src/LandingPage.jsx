@@ -4,12 +4,12 @@ import { Link } from "react-router-dom";
 
 export default function LandingPage() {
   return (
-    <div className="min-h-screen bg-white text-gray-800 flex flex-col">
+    <div>
       {/* Navbar */}
-      <header className="flex justify-between items-center px-6 py-4 shadow">
+      <header>
         <h1>MedTrack</h1>
         <nav>
-          <Link to="/login" className="mr-4 text-blue-600 font-medium hover:underline">Login</Link>
+          <Link to="/login">Enter your account!</Link>
         </nav>
       </header>
 
