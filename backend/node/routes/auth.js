@@ -53,8 +53,7 @@ router.post('/register', async (req, res) => {
 // Login
 router.post('/login', async (req, res) => {
         const { account, password, rememberMe } = req.body;
-
-
+        console.log("Login request body:", req.body); // << AICI
 
         // Validate email or phone and password
         if (!account || !password) {
@@ -86,8 +85,13 @@ router.post('/login', async (req, res) => {
         let expiresIn = rememberMe ? '7d' : '1h'; // Set expiration time based on rememberMe
         const token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn });// Sign the token with a secret key and set expiration time
 
-        res.json({ token });
         console.log('Login successful:', user.first_name, user.last_name, user.email, user.phone);
+
+        res.json({
+          token,
+          first_name: user.first_name,
+          msg: 'Login successful!'
+        });
     } catch (err) {
         console.error(err.message);
         res.status(500).send('Server error');
@@ -174,5 +178,6 @@ router.post('/reset-password/:token', async (req, res) => {
     }
 });
 
-
     module.exports = router;
+
+
