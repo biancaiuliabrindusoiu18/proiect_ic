@@ -61,32 +61,32 @@ def detect_document_type(text):
         # Căutăm cuvintele cheie
         if re.search(keyword_pattern, line):
             found_keyword = True
-            print(f"Găsit cuvânt cheie în linia {i + 1}: {line}")
+            #print(f"Găsit cuvânt cheie în linia {i + 1}: {line}")
             continue  # După găsirea cuvântului cheie, trecem la căutarea intervalului
 
         # Dacă am găsit cuvântul cheie, căutăm intervalul
             # Căutăm intervalul în linia curentă
         if re.match(interval_pattern, line):
             found_interval = True
-            print(f"Găsit interval în linia {i + 1}: {line}")
+            #print(f"Găsit interval în linia {i + 1}: {line}")
             # După găsirea intervalului, verificăm linia anterioară
             if previous_line and re.match(value_pattern, previous_line):
-                print(f"Găsit valoare în linia anterioară: {previous_line}")
+                #print(f"Găsit valoare în linia anterioară: {previous_line}")
                 last_value = 'AFTER'  # Linia anterioară conține valoare
             elif previous_line and len(previous_line) >= 6:
-                print(f"Găsit text lung în linia anterioară: {previous_line}")
+                #print(f"Găsit text lung în linia anterioară: {previous_line}")
                 last_value = 'BEFORE'  # Linia anterioară conține text lung
             break  # Opriți după ce am găsit primul interval valid
         if re.match(interval_nonvalue, line):
             found_interval = True
             next_line=lines[i+1].strip()
-            print(f"Găsit interval în linia {i + 1}: {line}")
+            #print(f"Găsit interval în linia {i + 1}: {line}")
             # După găsirea intervalului, verificăm linia anterioară
             if next_line and re.match(interval_nonvalue, next_line):
-                print(f"Găsit valoare în linia anterioară: {next_line}")
+                #print(f"Găsit valoare în linia anterioară: {next_line}")
                 last_value = 'AFTER'  # Linia anterioară conține valoare
             elif next_line and len(previous_line) >= 6:
-                print(f"Găsit text lung în linia anterioară: {next_line}")
+                #print(f"Găsit text lung în linia anterioară: {next_line}")
                 last_value = 'BEFORE'  # Linia anterioară conține text lung
             break  # Opriți după ce am găsit primul interval valid
 
@@ -457,10 +457,11 @@ def parse_after_mode(lines):
     analyses = []
     i = 0
 
-    while i < len(lines):
+    while i+1 < len(lines):
         line = lines[i]
-
-        # Căutăm dacă linia are un nume valid de analiză
+        # print(i)
+        # print(line)
+                # Căutăm dacă linia are un nume valid de analiză
         name = None
         if line.strip() and  not re.search(r"^(Informatii|Metoda|Nota|Observatii|Ser|Adresa|Data|CNP|Pagina|TRIMIS DE|LUCRAT|GENERAT|VALORI BIOLOGICE|ANTECEDENT).*", line, re.IGNORECASE):
             name = line.strip()
@@ -682,3 +683,51 @@ def test_parse_after_mode():
 #test_parse_after_mode()
 
 
+
+
+
+data_pattern=r"\b\d{1,2}[.\\\/]\d{1,2}[.\\\/]\d{2,4}\b|\b\d{1,2}\.?\s+(?:ianuarie|februarie|martie|aprilie|mai|iunie|iulie|august|septembrie|octombrie|noiembrie|decembrie|ian|feb|mar|apr|iun|iul|aug|sep|oct|nov|dec)\.?\s+\d{4}\b"
+recolt_pattern =r"recoltat|recoltare|recoltarea|recoltarii"
+
+def data_recoltare_detect(text):
+    data_recoltare=None
+    lines = text.splitlines()
+    found_data = False
+    for line in lines:
+        line = line.strip()  # Convertim linia la litere mici pentru a face căutarea insensibilă la caz
+        if re.search(recolt_pattern, line.lower()):
+            # Căutăm data în linia curentă
+            #print(f"Linia curentă: {line}") 
+            date=re.search(data_pattern, line.lower())
+            #print(date)
+            if date:
+                found_data = True
+                data_recoltare = date.group(0)
+                break  # Opriți după ce am găsit prima dată validă
+            else:
+                #poate e pe urm rand
+                if lines.index(line) + 1 < len(lines):
+                    next_line = lines[lines.index(line) + 1].strip()
+                    date=re.search(data_pattern, next_line.lower()) 
+                    #print(date)
+                    if date:
+                        found_data = True
+                        data_recoltare = date.group(0)
+                        break
+
+
+    return data_recoltare
+
+
+
+def extract_pacient_data(text):
+    lines = text.splitlines()
+    pacient = {}
+    pacient["analize"] = []  # Inițializăm lista de analize
+    pacient["data_recoltare"] = data_recoltare_detect(text)
+    type = detect_document_type(text)
+    if(type=="BEFORE"):
+        pacient["analize"] = parse_before_mode(lines)
+    elif(type=="AFTER"):
+        pacient["analize"] = parse_after_mode(lines)
+    return pacient
