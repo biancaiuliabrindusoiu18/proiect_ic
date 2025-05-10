@@ -1,31 +1,55 @@
 const mongoose = require('mongoose');
 
+const testCodeRegex = /^[A-Za-z0-9]+$/; // Alphanumeric only for test code
+const testNameRegex = /^[A-Za-z\s]+$/; // Only letters and spaces for test name
+const testUnitRegex = /^[A-Za-z\/]+$/; // Only letters and slashes for test unit
+const testValueRegex = /^(positive|negative|\d+(\.\d+)?)$/; // Accepts "positive", "negative", or a number (integer or float)
+
 const AnalysisSchema = new mongoose.Schema({
-  userId: { // ID-ul utilizatorului
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'User',
-    required: true
+  test_code: { 
+    type: String, 
+    required: true, 
+    match: [testCodeRegex, 'Test code must be alphanumeric.']
   },
-  name: { // Numele analizei (ex: HTC)
+  test_name: { 
+    type: String, 
+    required: true, 
+    match: [testNameRegex, 'Test name must contain only letters and spaces.']
+  },
+  test_value: { 
     type: String,
     required: true,
-    trim: true
+    match: [testValueRegex, 'Test value must be "positive", "negative", or a number']
   },
-  value: { // Valoarea rezultatului analizei
-    type: Number,
-    required: true
+  test_unit: { 
+    type: String, 
+    required: true, 
+    match: [testUnitRegex, 'Test unit must contain only letters and slashes.']
   },
-  unit: { // Unități (ex: mg/dL, cm, etc.)
-    type: String,
-    required: true
+  test_date: { 
+    type: Date, 
+    required: true,
+    validate: {
+      validator: function(value) {
+        return !isNaN(value.getTime()); // Ensures it's a valid date
+      },
+      message: 'Test date must be a valid date.'
+    }
   },
-  interval: { // Intervalul de referință pentru analiza respectivă
-    type: String,
-    required: true
-  },
-  date: { // Data la care a fost efectuată analiza
-    type: Date,
-    required: true
+  reference_range: {
+    min: {
+      type: String,
+      required: true,
+      match: [testValueRegex, 'Reference range must be "positive", "negative", or a number']
+    },
+    max: {
+      type: String,
+      required: true,
+      match: [testValueRegex, 'Reference range must be "positive", "negative", or a number']
+    }
   }
 });
-module.exports = mongoose.model('Analysis', AnalysisSchema);
+
+const Analysis = mongoose.model('Analysis', AnalysisSchema);
+
+module.exports = Analysis;
