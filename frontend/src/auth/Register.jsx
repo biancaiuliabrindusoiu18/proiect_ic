@@ -3,14 +3,19 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate, useLocation } from "react-router-dom";
 import Logo from '../imag/logo.png'; // Import the logo image
 import './auth.css'; //  Import the CSS file for styling
+import { FaEye, FaEyeSlash } from 'react-icons/fa'; // Import eye icons
 
 const Register = () => {
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [birth_date, setBirth_date] = useState('');
+  const [sex, setSex] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [error, setError] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
   const currentPath = location.pathname;
@@ -26,10 +31,7 @@ const Register = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!firstName || !lastName || !email || !password || !confirmPassword) {
-      setError('Please fill in all fields.');
-      return;
-    } else if (password !== confirmPassword) {
+    if (password !== confirmPassword) {
       setError('Passwords do not match.');
       return;
     }
@@ -40,6 +42,8 @@ const Register = () => {
         password,
         firstName,
         lastName,
+        birth_date,
+        sex
       });
 
       console.log('Registration successful:', response.data);
@@ -115,36 +119,94 @@ const Register = () => {
             </div>
 
             <div>
+              <label htmlFor="birth_date">Date of Birth</label>
+              <input
+                type="date"
+                id="birth_date"
+                value={birth_date}
+                onChange={(e) => setBirth_date(e.target.value)}
+              />
+            </div>
+
+            <div className="radio-group">
+              <label htmlFor="sex">Sex</label>
+              <div className="radio-options">
+                <label className="radio-label">
+                  <input
+                    type="radio"
+                    name="sex"
+                    value="male"
+                    checked={sex === 'male'}
+                    onChange={() => setSex('male')}
+                  />
+                  Male
+                </label>
+                <label className="radio-label">
+                  <input
+                    type="radio"
+                    name="sex"
+                    value="female"
+                    checked={sex === 'female'}
+                    onChange={() => setSex('female')}
+                  />
+                  Female
+                </label>
+              </div>
+            </div>
+
+            <div>
               <label htmlFor="email">Email</label>
               <input
                 type="email"
                 id="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                placeholder="email@example.com"
+                placeholder="Example: email@example.com"
               />
             </div>
 
-            <div>
+            <div className="password-field">
               <label htmlFor="password">Password</label>
-              <input
-                type="password"
-                id="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                placeholder="********"
-              />
+              <div className="password-input-container">
+                <input
+                  type={showPassword ? "text" : "password"}
+                  id="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  placeholder="Example: Password123"
+                  required
+                />
+                <button 
+                  type="button" 
+                  className="password-toggle-btn"
+                  onClick={() => setShowPassword(!showPassword)}
+                  aria-label={showPassword ? "Hide password" : "Show password"}
+                >
+                  {showPassword ? <FaEyeSlash /> : <FaEye />}
+                </button>
+              </div>
             </div>
 
-            <div>
+            <div className="password-field">
               <label htmlFor="confirmPassword">Confirm Password</label>
-              <input
-                type="password"
-                id="confirmPassword"
-                value={confirmPassword}
-                onChange={(e) => setConfirmPassword(e.target.value)}
-                placeholder="********"
-              />
+              <div className="password-input-container">
+                <input
+                  type={showConfirmPassword ? "text" : "password"}
+                  id="confirmPassword"
+                  value={confirmPassword}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
+                  placeholder="Example: Password123"
+                  required
+                />
+                <button 
+                  type="button" 
+                  className="password-toggle-btn"
+                  onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                  aria-label={showConfirmPassword ? "Hide password" : "Show password"}
+                >
+                  {showConfirmPassword ? <FaEyeSlash /> : <FaEye />}
+                </button>
+              </div>
             </div>
 
             <button type="submit">Register</button>

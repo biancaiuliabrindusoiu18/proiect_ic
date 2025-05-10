@@ -6,46 +6,46 @@ const nodemailer = require('nodemailer');
 const crypto = require('crypto');
 const User = require('../models/User');
 
-        //const emailRegex = /^[a-zA-Z0-9._%+-]{6,30}@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
-        //const phoneRegex = /^\+?[0-9]{10,15}$/; // Optional +, 10-15 digits  TBD
-        const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d.,!]{8,}$/; // Minimum 8 characters, at least one letter and one number
-                                                                        //NU MERG PAROLE CU .
+
 // Register
 router.post('/register', async (req, res) => {
-    const { account, password, firstName, lastName } = req.body;
+    const { account, password, firstName, lastName, birth_date, sex } = req.body;
 
     // Input validation
-    if (!account || !password || !firstName || !lastName) {
-        return res.status(400).json({ msg: 'All fields are mandatory.' });
+    if (!account || !password || !firstName || !lastName || !birth_date || !sex) {
+        return res.status(400).json({ msg: ' Please fill in all the fields' });
     }
 
     try { 
         let user;
         if (account.includes('@')) {
             user = await User.findOne({ email: account });
-        } /*else { //
-            user = await User.findOne({ phone: account });
-        }*/ // TBD if phone number
-
+        }
         if (user) {
-            return res.status(400).json({ msg: 'An account with the provided Email or Phone number already exists.'  });
+            return res.status(400).json({ msg: 'An account with the provided Email already exists.'  });
         }
 
         // create a new user
         user = new User({
             first_name: firstName,
             last_name: lastName,
-            email: account.includes('@') ? account : null,
-            //phone: !account.includes('@') ? account : null,
-            password: password // Password hashing will be handled by the middleware in User model
+            email: account,
+            password: password, // Password hashing will be handled by the middleware in User model
+            birth_date: birth_date,
+            sex: sex
         });
 
         // save the user to the database
         await user.save();
         res.status(201).json({ msg: 'User registered successfully' });
 
-    } catch (err) {
+      } catch (err) {
         console.error(err.message);
+        // MoongoseDB validation error handling
+        if (err.name === 'ValidationError') {
+            const messages = Object.values(err.errors).map(val => val.message);
+            return res.status(400).json({ msg: messages.join(', ') });
+        }
         res.status(500).send('Server error');
     }
 });
@@ -53,20 +53,18 @@ router.post('/register', async (req, res) => {
 // Login
 router.post('/login', async (req, res) => {
         const { account, password, rememberMe } = req.body;
-        console.log("Login request body:", req.body); // << AICI
 
         // Validate email or phone and password
         if (!account || !password) {
-            return res.status(400).json({ msg: 'Email or or Phone number and password are required.' });
+            return res.status(400).json({ msg: 'Email and password are required.' });
         }
 
         try { //search for user by email or phone
             let user;
             if (account.includes('@')) { // Check if account is an email
             user = await User.findOne({ email: account });
-            } /*else {// It is a phone number
-            user = await User.findOne({ phone: account });
-            }   TBD if phone number*/                                        
+            }
+
             if (!user) {
                 return res.status(400).json({ msg: 'No account found with the provided Email or Phone number.' });
             }
@@ -90,10 +88,15 @@ router.post('/login', async (req, res) => {
         res.json({
           token,
           first_name: user.first_name,
-          msg: 'Login successful!'
+          msg: 'Login successful! You will be redirected to the home page!',
         });
-    } catch (err) {
+      } catch (err) {
         console.error(err.message);
+        // MoongoseDB validation error handling
+        if (err.name === 'ValidationError') {
+            const messages = Object.values(err.errors).map(val => val.message);
+            return res.status(400).json({ msg: messages.join(', ') });
+        }
         res.status(500).send('Server error');
     }
 });
@@ -138,11 +141,16 @@ router.post('/forgot-password', async (req, res) => {
         `
       });
     }
-      res.json({ msg: 'If an account with that email exists, you’ll receive a password reset link shortly.' });
+      res.json({ msg: 'If an account with that email exists, you\'ll receive a password reset link shortly.' });
     } catch (err) {
       console.error(err.message);
+      // MoongoseDB validation error handling
+      if (err.name === 'ValidationError') {
+          const messages = Object.values(err.errors).map(val => val.message);
+          return res.status(400).json({ msg: messages.join(', ') });
+      }
       res.status(500).send('Server error');
-    }
+  }
 });
 
 // Reset password using the generated token
@@ -174,8 +182,14 @@ router.post('/reset-password/:token', async (req, res) => {
       res.json({ msg: 'Password has been successfully reset.' });
     } catch (err) {
       console.error(err.message);
+      // MoongoseDB validation error handling
+      if (err.name === 'ValidationError') {
+          const messages = Object.values(err.errors).map(val => val.message);
+          return res.status(400).json({ msg: messages.join(', ') });
+      }
       res.status(500).send('Server error');
-    }
+  }
+  
 });
 
     module.exports = router;

@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate, useLocation } from "react-router-dom";
 import Logo from '../imag/logo.png'; // Import the logo image
 import './auth.css'; // Import the CSS file for styling
+import { FaEye, FaEyeSlash } from 'react-icons/fa'; // Import eye icons
 
 const Login = () => {
   const [email, setEmail] = useState('');
@@ -11,6 +12,8 @@ const Login = () => {
   const [message, setMessage] = useState('');
   const [rememberMe, setRememberMe] = useState(false);
   const [countdown, setCountdown] = useState(3); // countdown for redirect
+    const [showPassword, setShowPassword] = useState(false);
+    const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
   const currentPath = location.pathname;
@@ -33,7 +36,7 @@ const Login = () => {
     if (countdown > 0 && countdown !== 3) {
       timer = setInterval(() => {
         setCountdown(prev => prev - 1);
-      }, 10000);
+      }, 10);
     }
 
     return () => clearInterval(timer);
@@ -128,16 +131,28 @@ const Login = () => {
               />
             </div>
 
-            <div className="flex flex-col gap-1.5">
+            <div className="password-field">
               <label htmlFor="password">Password</label>
-              <input
-                type="password"
-                id="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                placeholder="********"
-              />
+              <div className="password-input-container">
+                <input
+                  type={showPassword ? "text" : "password"}
+                  id="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  placeholder="Example: Password123"
+                  required
+                />
+                <button 
+                  type="button" 
+                  className="password-toggle-btn"
+                  onClick={() => setShowPassword(!showPassword)}
+                  aria-label={showPassword ? "Hide password" : "Show password"}
+                >
+                  {showPassword ? <FaEyeSlash /> : <FaEye />}
+                </button>
+              </div>
             </div>
+
 
             <div className="auth-options">
               <div className="remember-me">
