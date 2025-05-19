@@ -61,15 +61,20 @@ def extract_features(text: str):
 # Încărcăm dataset-ul
 dataset = []
 
+BASE_DIR = Path(__file__).resolve().parent.parent
+
+folder_path_valid = BASE_DIR / "testfiles" / "testfiles_true"
+folder_path_invalid = BASE_DIR / "testfiles" / "testfiles_false"
+
 # Adăugăm fișierele valide (analize corecte)
-folder_path_valid = Path(".\\backend\\testfiles\\testfiles_true")
+#folder_path_valid = Path(".\\testfiles\\testfiles_true")
 for file_name in folder_path_valid.iterdir():
     if file_name.is_file():
         text = pdf_to_text(file_name)
         dataset.append({"file_name": file_name.name, "content": text, "class": True})
 
 # Adăugăm fișierele invalide (analize greșite)
-folder_path_invalid = Path(".\\backend\\testfiles\\testfiles_false")
+#folder_path_invalid = Path(".\\testfiles\\testfiles_false")
 for file_name in folder_path_invalid.iterdir():
     if file_name.is_file():
         text = pdf_to_text(file_name)

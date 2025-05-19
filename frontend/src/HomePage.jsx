@@ -10,7 +10,7 @@ const Home = () => {
     useEffect(() => {
       const token = localStorage.getItem('token') || sessionStorage.getItem('token');
       if (!token) {
-        navigate('/auth/login'); // Redirect to login page if no token is found
+        navigate('/login'); // Redirect to login page if no token is found
       }
     }, [navigate]);
   
