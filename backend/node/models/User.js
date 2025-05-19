@@ -51,6 +51,10 @@ const UserSchema = new mongoose.Schema({
     type: Date,
     default: Date.now        
   },
+  analyses: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Analysis'  // Referencing the Analysis model
+  }],
   resetPasswordToken: String,    // Token for password reset
   resetPasswordExpire: Date     // Expiration date for the token
 });
