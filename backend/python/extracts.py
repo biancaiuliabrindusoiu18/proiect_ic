@@ -731,6 +731,88 @@ def test_parse_after_mode():
 
 
 
+#parsare la o forma si mai buna json
+# {
+#   "nume": "",
+#   "valoare": "",
+#   "unit": "",
+#   "intv": {
+#     "nonvalue": "",
+#     "min": "",
+#     "max": ""
+#   },
+#   "data": ""
+# }
+
+
+def parse_interval(interval_raw):
+    interval_raw = interval_raw.strip().lower()
+
+    # Format: 'negativ <5 mg/dl' → nonvalue='negativ', min=None, max='5'
+    if 'negativ' in interval_raw and '<' in interval_raw:
+        match = re.search(r'<\s*([\d\.,]+)', interval_raw)
+        return {
+            'nonvalue': 'negativ',
+            'min': None,
+            'max': match.group(1) if match else None
+        }
+
+    # Format: 'negativ' → nonvalue='negativ', min=None, max=None
+    elif 'negativ' in interval_raw:
+        return {
+            'nonvalue': 'negativ',
+            'min': None,
+            'max': None
+        }
+
+    # Format: '<25 WBC/ul' → nonvalue=None, min=None, max='25'
+    elif interval_raw.startswith('<'):
+        match = re.search(r'<\s*([\d\.,]+)', interval_raw)
+        return {
+            'nonvalue': None,
+            'min': None,
+            'max': match.group(1) if match else None
+        }
+
+    # Format: '(3.9 - 5.2)' or '[3.5 - 5.5]' or '1,001-1,035'
+    match = re.search(r'[\[\(]?\s*([\d\.,]+)\s*[-–]\s*([\d\.,]+)\s*[\]\)]?', interval_raw)
+    if match:
+        return {
+            'nonvalue': None,
+            'min': match.group(1).replace(',', '.'),
+            'max': match.group(2).replace(',', '.')
+        }
+
+    # Format: '<2.0 mg/dl' or similar → max only
+    match = re.search(r'<\s*([\d\.,]+)', interval_raw)
+    if match:
+        return {
+            'nonvalue': None,
+            'min': None,
+            'max': match.group(1).replace(',', '.')
+        }
+
+    # Default: can't parse
+    return {
+        'nonvalue': interval_raw,
+        'min': None,
+        'max': None
+    }
+
+
+def transform_analysis_list(pacient):
+    rezultat = []
+    for a in pacient.get("analize", []):
+        rezultat.append({
+            'nume': a.get('nume'),
+            'valoare': a.get('valoare'),
+            'unit': a.get('unitate'),  
+            'intv': parse_interval(a.get('interval', '')),
+            'data': a.get('data_recoltare')
+        })
+    return rezultat
+
+
 def extract_pacient_data(text):
     lines = text.splitlines()
     pacient = {}
@@ -739,7 +821,19 @@ def extract_pacient_data(text):
     type = detect_document_type(text)
     if(type=="BEFORE"):
         pacient["analize"] = parse_before_mode(lines)
+        pacient_interval_parsed = transform_analysis_list(pacient)
     elif(type=="AFTER"):
         pacient["analize"] = parse_after_mode(lines)
-    return pacient
+        pacient_interval_parsed = transform_analysis_list(pacient)
+    return pacient_interval_parsed
+
+
+
+# check check check
+# from utils import pdf_to_text
+# text = pdf_to_text(".\\backend\\testfiles\\testfiles_true\\analizaLaura.pdf")
+
+# pacient = extract_pacient_data(text)
+# print(pacient)
+
 
