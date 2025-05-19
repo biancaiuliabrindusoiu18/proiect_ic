@@ -1,5 +1,8 @@
+const express = require('express');
 const Analysis = require('../models/Analysis');  // Assuming Analysis model is defined
 const User = require('../models/User');
+
+const router = express.Router();
 
 //add
 router.post('/add-analysis', async (req, res) => {
@@ -73,3 +76,5 @@ router.delete('/delete-analysis/:analysisId', async (req, res) => {
     res.status(500).send('Server error');
   }
 });
+
+    module.exports = router;

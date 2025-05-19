@@ -9,6 +9,7 @@ import HomePage from './HomePage';
 import RegistrationSuccess from './auth/RegisterSuccess';
 import Header from './components/Header';
 import LandingPage from './LandingPage';
+import UploadAnalysis from './mainPages/UploadAnalysis';
 
 const Layout = ({ children }) => {
   const location = useLocation();
@@ -37,6 +38,7 @@ const App = () => {
         <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/reset-password/:token" element={<ResetPassword />} />
         <Route path="/home" element={<HomePage />} />
+        <Route path="/upload-analysis" element={<UploadAnalysis />} />
         {/* Add other routes here */}
       </Routes>
       </Layout> 
