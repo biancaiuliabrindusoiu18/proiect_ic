@@ -29,6 +29,36 @@ test_strings = [
 #         print(f"Respins: {text}")
 
 
+data_pattern=r"\b\d{1,2}[.\\\/]\d{1,2}[.\\\/]\d{2,4}\b|\b\d{1,2}\.?\s+(?:ianuarie|februarie|martie|aprilie|mai|iunie|iulie|august|septembrie|octombrie|noiembrie|decembrie|ian|feb|mar|apr|iun|iul|aug|sep|oct|nov|dec)\.?\s+\d{4}\b"
+recolt_pattern =r"recoltat|recoltare|recoltarea|recoltarii"
+
+def data_recoltare_detect(lines):
+    data_recoltare=None
+    found_data = False
+    for line in lines:
+        line = line.strip()  # Convertim linia la litere mici pentru a face căutarea insensibilă la caz
+        if re.search(recolt_pattern, line.lower()):
+            # Căutăm data în linia curentă
+            #print(f"Linia curentă: {line}") 
+            date=re.search(data_pattern, line.lower())
+            #print(date)
+            if date:
+                found_data = True
+                data_recoltare = date.group(0)
+                break  # Opriți după ce am găsit prima dată validă
+            else:
+                #poate e pe urm rand
+                if lines.index(line) + 1 < len(lines):
+                    next_line = lines[lines.index(line) + 1].strip()
+                    date=re.search(data_pattern, next_line.lower()) 
+                    #print(date)
+                    if date:
+                        found_data = True
+                        data_recoltare = date.group(0)
+                        break
+
+
+    return data_recoltare
 
 
 
@@ -257,12 +287,12 @@ def test_detect_document_type():
 
 # ok acum ca am stabilit daca intervalu e primu sau nu vom avea 2 cazuri
 # format json ma gandesc
-# {"data_recoltare":"",
-# "analize":{
+# {"analize":{
 #     "nume":"",
 #     "valoare":"",
 #     "unitate":"",
 #     "interval":""
+#     "data_recoltare":""
 #     }
 # }
 
@@ -273,6 +303,7 @@ def test_detect_document_type():
  
 
 def parse_before_mode(lines):
+    data_recoltare=data_recoltare_detect(lines)
     analyses = []
     i = 0
 
@@ -362,7 +393,8 @@ def parse_before_mode(lines):
                 "nume": name,
                 "valoare": value,
                 "unitate": unit,
-                "interval": interval
+                "interval": interval,
+                "data_recoltare": data_recoltare
             })
 
         i += 1
@@ -373,6 +405,7 @@ def parse_before_mode(lines):
 
 def test_parse_before_mode():
     text_before = """
+    data recoltare 25/03/2025
     [28 - 100]
     AMILAZA SERICA
     =   102
@@ -420,6 +453,13 @@ def test_parse_before_mode():
     print("ALTAAAAAAAAAAAAAAAAA")
 
     text_messy = """
+    ba blabla uite data aici dar nu e buna
+    haha
+    uite ce faci
+    data recoltare 25/03/2025
+
+
+
     [28 - 100]
     Informatii suplimentare: analiza efectuata la ora 9AM
     AMILAZA SERICA
@@ -454,6 +494,7 @@ def test_parse_before_mode():
 
 
 def parse_after_mode(lines):
+    data_recoltare=data_recoltare_detect(lines)
     analyses = []
     i = 0
 
@@ -535,7 +576,8 @@ def parse_after_mode(lines):
                 "nume": name,
                 "valoare": value,
                 "unitate": unit,
-                "interval": interval
+                "interval": interval,
+                "data_recoltare": data_recoltare
             })
 
         i += 1
@@ -545,6 +587,7 @@ def parse_after_mode(lines):
 
 def test_parse_after_mode():
     text_after = """
+    data recoltare 25/03/2025
     Hematii
     4.800.000 /mm³
     (3.900.000 - 5.200.000)
@@ -686,48 +729,17 @@ def test_parse_after_mode():
 
 
 
-data_pattern=r"\b\d{1,2}[.\\\/]\d{1,2}[.\\\/]\d{2,4}\b|\b\d{1,2}\.?\s+(?:ianuarie|februarie|martie|aprilie|mai|iunie|iulie|august|septembrie|octombrie|noiembrie|decembrie|ian|feb|mar|apr|iun|iul|aug|sep|oct|nov|dec)\.?\s+\d{4}\b"
-recolt_pattern =r"recoltat|recoltare|recoltarea|recoltarii"
-
-def data_recoltare_detect(text):
-    data_recoltare=None
-    lines = text.splitlines()
-    found_data = False
-    for line in lines:
-        line = line.strip()  # Convertim linia la litere mici pentru a face căutarea insensibilă la caz
-        if re.search(recolt_pattern, line.lower()):
-            # Căutăm data în linia curentă
-            #print(f"Linia curentă: {line}") 
-            date=re.search(data_pattern, line.lower())
-            #print(date)
-            if date:
-                found_data = True
-                data_recoltare = date.group(0)
-                break  # Opriți după ce am găsit prima dată validă
-            else:
-                #poate e pe urm rand
-                if lines.index(line) + 1 < len(lines):
-                    next_line = lines[lines.index(line) + 1].strip()
-                    date=re.search(data_pattern, next_line.lower()) 
-                    #print(date)
-                    if date:
-                        found_data = True
-                        data_recoltare = date.group(0)
-                        break
-
-
-    return data_recoltare
-
 
 
 def extract_pacient_data(text):
     lines = text.splitlines()
     pacient = {}
     pacient["analize"] = []  # Inițializăm lista de analize
-    pacient["data_recoltare"] = data_recoltare_detect(text)
+    #pacient["data_recoltare"] = data_recoltare_detect(text)
     type = detect_document_type(text)
     if(type=="BEFORE"):
         pacient["analize"] = parse_before_mode(lines)
     elif(type=="AFTER"):
         pacient["analize"] = parse_after_mode(lines)
     return pacient
+

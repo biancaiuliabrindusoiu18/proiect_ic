@@ -6,11 +6,11 @@ const testUnitRegex = /^[A-Za-z\/]+$/; // Only letters and slashes for test unit
 const testValueRegex = /^(positive|negative|\d+(\.\d+)?)$/; // Accepts "positive", "negative", or a number (integer or float)
 
 const AnalysisSchema = new mongoose.Schema({
-  test_code: { 
+  /*test_code: { 
     type: String, 
     required: true, 
     match: [testCodeRegex, 'Test code must be alphanumeric.']
-  },
+  },*/
   test_name: { 
     type: String, 
     required: true, 
