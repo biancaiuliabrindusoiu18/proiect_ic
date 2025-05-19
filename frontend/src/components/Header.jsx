@@ -3,9 +3,19 @@ import { useNavigate } from 'react-router-dom';
 import './Header.css'; // Import the CSS file
 import Logo from '../imag/logo.png'; // Import the logo image
 
+
+
 const Header = () => {
   const navigate = useNavigate();
   const [first_name, setFirst_name] = useState('');
+
+// Handle logout
+  const handleLogout = () => {
+    localStorage.removeItem('token');
+    sessionStorage.removeItem('token');
+    navigate('/login');
+  };
+
 
   useEffect(() => {
     // Check both localStorage and sessionStorage
@@ -22,6 +32,11 @@ const Header = () => {
       <div className="container left-container">
         <img src={Logo} alt="Medical icon"/>
         <button className="home-button" onClick={() => navigate('/home')}>Home</button>
+        <div className="button">
+          <button className="home-button" onClick={handleLogout}>
+            Log out
+          </button>
+        </div>
       </div>
 
       {/* Right Section */}

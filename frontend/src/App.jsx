@@ -5,7 +5,7 @@ import Login from './auth/Login';
 import Register from './auth/Register';
 import ForgotPassword from './auth/ForgotPassword';
 import ResetPassword from './auth/ResetPassword';
-import HomePage from './HomePage';
+import HomePage from './mainPages/HomePage';
 import RegistrationSuccess from './auth/RegisterSuccess';
 import Header from './components/Header';
 import LandingPage from './LandingPage';
