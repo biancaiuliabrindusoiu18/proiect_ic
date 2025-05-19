@@ -1,54 +1,44 @@
-const express = require('express');
-const mongoose = require('mongoose');
-const Analysis = require('../models/Analysis');  // importă modelul
-const axios = require('axios'); // folosit pentru a face cereri HTTP către FastAPI
-const multer = require('multer');  // pentru gestionarea fișierelor uploadate
+const express = require('express');            // Handles routing for the API
+const multer = require('multer');              // Temporarily stores uploaded files
+const fs = require('fs');                      // Reads and deletes local files
+const axios = require('axios');                // Sends HTTP requests to FastAPI
+const FormData = require('form-data');         // Builds multipart/form-data payloads
+const path = require('path');                  // (Optional) Helps with file path handling
 
 const router = express.Router();
 
-// Configurare multer pentru upload de fișiere
-const upload = multer({ dest: 'uploads/' }); // se salvează fișierele încărcate în folderul 'uploads'
+// Temporarily store uploaded PDFs in 'uploads/' folder
+const upload = multer({ dest: 'uploads/' });
 
-// 1. Upload PDF și procesare în FastAPI
 router.post('/upload-pdf', upload.single('file'), async (req, res) => {
     try {
-        const file = req.file; // fișierul încărcat
+        const file = req.file;
+
         if (!file) {
-            return res.status(400).json({ message: 'Fișierul nu a fost încărcat.' });
+            return res.status(400).json({ message: 'No file was uploaded.' });
         }
 
-        // Trimite fișierul către API-ul FastAPI
         const formData = new FormData();
-        formData.append('file', file.buffer, file.originalname);
+        formData.append('file', fs.createReadStream(file.path), file.originalname);
 
-        // Apel FastAPI pentru a analiza fișierul
-        const response = await axios.post('http://127.0.0.1:8000/analyze', formData, {
-            headers: formData.getHeaders()
+        const response = await axios.post(process.env.FASTAPI_URL, formData, {
+            headers: formData.getHeaders(),
         });
 
-        // Dacă analiza a fost realizată cu succes
-        if (response.data) {
-            const { name, value, unit, interval, date, userId } = response.data;
+        fs.unlinkSync(file.path); // Clean up uploaded file after processing
+        console.log('Data received from FastAPI:', response.data);
 
-            // Salvează analiza în MongoDB
-            const newAnalysis = new Analysis({
-                userId,
-                name,
-                value,
-                unit,
-                interval,
-                date
-            });
-
-            await newAnalysis.save();
-            res.status(201).json({ message: 'Analiza a fost salvată cu succes.', analysis: newAnalysis });
-        } else {
-            res.status(400).json({ message: 'Fișierul nu a putut fi procesat.' });
-        }
+        return res.status(200).json({
+            message: 'Analysis processed successfully.',
+            data: response.data
+        });
 
     } catch (err) {
         console.error(err);
-        res.status(500).json({ message: 'A apărut o eroare la procesarea fișierului.', error: err });
+        return res.status(500).json({
+            message: 'An error occurred while processing the file.',
+            error: err.message
+        });
     }
 });
 
