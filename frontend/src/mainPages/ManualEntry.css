@@ -1,20 +1,43 @@
-/*.manual-entry-container {
+.manual-entry-container {
   padding: 2rem;
-  max-width: 800px;
+  max-width: 1000px;
   margin: auto;
+  margin-bottom: 4rem;
 }
 
 .manual-entry-row {
+  background-color:rgb(222, 230, 231);
+  border-radius: 12px;
+  padding:1rem;
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
-  margin-bottom: 1rem;
+  margin-bottom: 0.5rem;
+  margin-top: 1.5rem;
 }
 
-.manual-entry-row input,
-.manual-entry-row select {
+
+.manual-entry-name-input{
   padding: 0.5rem;
-  flex: 1 1 150px;
+  flex: 1 1 35%;
+}
+.manual-entry-value-input{  padding: 0.5rem;
+  flex: 1 1 15%;
+}
+.manual-entry-unit-input{  padding: 0.5rem;
+  flex: 1 1 15%;
+}
+  .manual-entry-date-input{  padding: 0.5rem;
+  flex: 1 1 20%;
+}
+.manual-entry-reference-type-select{  padding: 0.5rem;
+  flex: 0 0 30%;
+}
+.manual-entry-ref-input{  padding: 0.5rem;
+  flex: 1 1 15%;
+}
+.manual-entry-noval-input{  padding: 0.5rem;
+  flex: 1 1 100px;
 }
 
 .form-actions {
@@ -23,26 +46,53 @@
   margin-top: 2rem;
 }
 
-.add-field-button,
-.cancel-button,
+.cancel-button{
+  padding: 0.75rem 1.5rem;
+  font-weight: bold;
+  cursor: pointer;
+  margin-top:1rem;
+  width:40%;
+  margin-left: 3%;
+}
 .save-button {
   padding: 0.75rem 1.5rem;
   font-weight: bold;
   cursor: pointer;
+  margin-top:1rem;
+  width:40%;
+  margin-right: 3%;
 }
-
-.remove-button {
-  background-color: #ff4d4d;
-  color: white;
-  border: none;
-  padding: 0.5rem 1rem;
+.add-field-button {
+  padding: 0.75rem 1.5rem;
   font-weight: bold;
   cursor: pointer;
-  border-radius: 5px;
-  align-self: center;
+  margin-top:1rem;
+  width:65%;
+  
+}
+
+
+.remove-button {
+  all: unset;
+  background : linear-gradient(135deg, #e20909 0%, #712a2a 100%);
+  border: 1px solid rgba(255, 255, 255, 1);
+  border-radius: 12px;
+  box-shadow:0 2px 4px rgba(37,99,235,0.1);
+  color:#fff;
+  cursor:pointer;
+  font-family:"Inter",sans-serif;
+  font-size: 15px;
+  font-weight: 500;
+  letter-spacing: 0.3px;
+  overflow:hidden;
+  padding:9px 16px;
+  transition: all 0.3s ease;
+  max-height:20px;
 }
 
 .remove-button:hover {
-  background-color: #e60000;
+  background : linear-gradient(135deg, #e20909 0%, #712a2a 100%);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 12px;
+  box-shadow:0 4px 8px rgba(37,99,235,0.2);
 }
-*/

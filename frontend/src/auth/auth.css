@@ -10,7 +10,7 @@ header {
 
 button {
   background : linear-gradient(135deg, #3B82F6 0%, #1E40AF 100%);
-  border:none;
+  border: 1px solid rgba(255, 255, 255, 1);
   border-radius: 12px;
   box-shadow:0 2px 4px rgba(37,99,235,0.1);
   color:#fff;
@@ -29,7 +29,7 @@ button {
 
 button:hover {
   border-color: #4f46e5;
-  border:#1E40AF;
+  border: 1px solid rgba(255, 255, 255, 0.15);
   box-shadow:0 4px 8px rgba(37,99,235,0.2);
 }
 
@@ -37,12 +37,29 @@ button.active {
     background: linear-gradient(135deg, #2563EB 0%, #1E3A8A 100%);
     box-shadow: 0 4px 8px rgba(30, 64, 175, 0.25), inset 0 0 0 2px rgba(255, 255, 255, 0.1);
     transform: translateY(-1px);
-    border: 1px solid rgba(255, 255, 255, 0.15);
+    border: 1px solid rgba(255, 255, 255, 1);
     width:100%;
 
 }
 
+button.active:hover {
+    background: linear-gradient(135deg, #2563EB 0%, #1E3A8A 100%);
+    box-shadow: 0 4px 8px rgba(30, 64, 175, 0.25), inset 0 0 0 2px rgba(255, 255, 255, 0.1);
+    transform: translateY(-1px);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    width:100%;
+}
+
 button.inactive{
+    background: linear-gradient(135deg, #90b2ea 0%, #7d95e3 100%);
+    box-shadow: 0 4px 8px rgba(30, 64, 175, 0.25), inset 0 0 0 2px rgba(255, 255, 255, 0.1);
+    transform: translateY(-1px);
+    border: 1px solid rgba(255, 255, 255, 1);
+    width:50%;
+    max-width: 100px;
+}
+
+button.inactive:hover {
     background: linear-gradient(135deg, #90b2ea 0%, #7d95e3 100%);
     box-shadow: 0 4px 8px rgba(30, 64, 175, 0.25), inset 0 0 0 2px rgba(255, 255, 255, 0.1);
     transform: translateY(-1px);
@@ -66,7 +83,7 @@ form {
   margin-bottom: 2rem;
 }
 
-input[type="email"], input[type="password"], input [type="confirmPassword"], input[type="text"], input[type="date"]{
+input[type="email"], input[type="password"], input [type="confirmPassword"], input[type="text"], input[type="date"],select{
   padding: 10px;
   border: 1px solid #e2e8f0;       /* border + border-slate-200 */
   border-radius: 0.5rem;           /* rounded-lg */
@@ -74,7 +91,7 @@ input[type="email"], input[type="password"], input [type="confirmPassword"], inp
   width: 100%;
   transition: all 0.2s ease; 
 }
-input[type="email"]:focus, input[type="password"]:focus, input[type="text"]:focus, input[type="date"]:focus {
+input[type="email"]:focus, input[type="password"]:focus, input[type="text"]:focus, input[type="date"]:focus,select:focus {
   outline: none;
   border-color: #3B82F6;
   box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.5);

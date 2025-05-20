@@ -57,7 +57,7 @@
 
 .action-button {
   background : linear-gradient(135deg, #3B82F6 0%, #1E40AF 100%);
-  border:1px solid #4f46e5;
+  border: 1px solid rgba(255, 255, 255, 1);
   border-radius: 12px;
   box-shadow:0 2px 4px rgba(37,99,235,0.1);
   color:#fff;

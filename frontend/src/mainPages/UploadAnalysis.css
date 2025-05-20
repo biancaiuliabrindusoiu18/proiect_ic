@@ -109,14 +109,14 @@
   position: relative;
   transition: all 0.3s ease;
   width: 100%;
-  border: none;
+  border: 1px solid rgba(255, 255, 255, 1);
 }
 
 .browse-button:hover,
 .add-test-button:hover,
 .submit-button:hover {
   border-color: #4f46e5;
-  border: 1px solid #1E40AF;
+  border: 1px solid rgba(255, 255, 255, 0.15);
   box-shadow: 0 4px 8px rgba(37, 99, 235, 0.2);
 }
 

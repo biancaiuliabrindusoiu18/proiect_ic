@@ -63,47 +63,55 @@ const ManualEntry = () => {
       {fields.map((field, index) => (
     <div key={index} className="manual-entry-row">
       <input
+        type="date"
+        className="manual-entry-date-input"
+        value={field.date}
+        onChange={(e) => handleFieldChange(index, 'date', e.target.value)}
+      />
+      <input
         type="text"
-        placeholder="Name"
+        className="manual-entry-name-input"
+        placeholder="Analysis Name"
         value={field.name}
         onChange={(e) => handleFieldChange(index, 'name', e.target.value)}
       />
       <input
         type="text"
+        className="manual-entry-value-input"
         placeholder="Value"
         value={field.value}
         onChange={(e) => handleFieldChange(index, 'value', e.target.value)}
       />
       <input
         type="text"
+        className="manual-entry-unit-input"
         placeholder="Unit"
         value={field.unit}
         onChange={(e) => handleFieldChange(index, 'unit', e.target.value)}
       />
-      <input
-        type="date"
-        value={field.date}
-        onChange={(e) => handleFieldChange(index, 'date', e.target.value)}
-      />
+
       <select
+        className="manual-entry-reference-type-select"
         value={field.referenceType}
         onChange={(e) => handleFieldChange(index, 'referenceType', e.target.value)}
       >
-        <option value="minmax">Min/Max</option>
-        <option value="label">Label</option>
+        <option value="minmax">Min - Max type reference</option>
+        <option value="label">Non-value type reference</option>
       </select>
 
       {field.referenceType === 'minmax' ? (
         <>
           <input
             type="text"
-            placeholder="Min"
+            className="manual-entry-ref-input"
+            placeholder="Min value / do not fill if not applicable"
             value={field.min}
             onChange={(e) => handleFieldChange(index, 'min', e.target.value)}
           />
           <input
             type="text"
-            placeholder="Max"
+            className="manual-entry-ref-input"
+            placeholder="Max value / do not fill if not applicable"
             value={field.max}
             onChange={(e) => handleFieldChange(index, 'max', e.target.value)}
           />
@@ -111,6 +119,7 @@ const ManualEntry = () => {
       ) : (
         <input
           type="text"
+          className="manual-entry-noval-input"
           placeholder="Label (e.g. positive/negative)"
           value={field.label}
           onChange={(e) => handleFieldChange(index, 'label', e.target.value)}
