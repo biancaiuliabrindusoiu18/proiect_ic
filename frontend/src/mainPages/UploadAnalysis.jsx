@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import './UploadAnalysis.css';
 
-export default function UploadAnalysis() {
+const UploadAnalysis = () => {
   const navigate = useNavigate();
 
   // ✅ Redirect if not authenticated
@@ -108,7 +108,7 @@ export default function UploadAnalysis() {
           onDrop={handleDrop}
         >
           <div className="upload-icon">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
               <path d="M14 3v4a1 1 0 0 0 1 1h4"></path>
               <path d="M17 21h-10a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h7l5 5v11a2 2 0 0 1 -2 2z"></path>
               <path d="M12 11v6"></path>
@@ -136,7 +136,7 @@ export default function UploadAnalysis() {
           <div className="button-container">
             {file ? (
               <>
-                <button className="cancel-button" onClick={handleCancelClick}>
+                <button className="submit-button" onClick={handleCancelClick}>
                   <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                     <line x1="18" y1="6" x2="6" y2="18"></line>
                     <line x1="6" y1="6" x2="18" y2="18"></line>
@@ -144,7 +144,7 @@ export default function UploadAnalysis() {
                   Cancel
                 </button>
                 <button className="submit-button" onClick={handleSubmit} disabled={isLoading}>
-                  {isLoading ? 'Se trimite...' : 'Trimite'}
+                  {isLoading ? 'Uploading...' : 'Upload'}
                 </button>
               </>
             ) : (
@@ -162,7 +162,7 @@ export default function UploadAnalysis() {
         
         <div className="upload-section">
           <div className="upload-icon">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
               <path d="M14 3v4a1 1 0 0 0 1 1h4"></path>
               <path d="M17 21h-10a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h7l5 5v11a2 2 0 0 1 -2 2z"></path>
               <path d="M12 11v6"></path>
@@ -172,7 +172,7 @@ export default function UploadAnalysis() {
           <p className="upload-text">Or add them manually</p>
           
           <div className="button-container">
-            <button className="add-test-button" onClick={handleAddTestClick}>
+            <button className="add-test-button" onClick={() => navigate('/manual-entry')}>
               <span>+</span> Add a test
             </button>
           </div>
@@ -194,4 +194,6 @@ export default function UploadAnalysis() {
       )}
     </div>
   );
-}
+};
+
+export default UploadAnalysis;

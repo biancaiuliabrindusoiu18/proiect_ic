@@ -1,3 +1,7 @@
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
 header {
   display: flex;
   flex-direction: column; /* Aliniază elementele pe verticală */
@@ -6,6 +10,7 @@ header {
 
 button {
   background : linear-gradient(135deg, #3B82F6 0%, #1E40AF 100%);
+  border:none;
   border-radius: 12px;
   box-shadow:0 2px 4px rgba(37,99,235,0.1);
   color:#fff;
@@ -32,8 +37,9 @@ button.active {
     background: linear-gradient(135deg, #2563EB 0%, #1E3A8A 100%);
     box-shadow: 0 4px 8px rgba(30, 64, 175, 0.25), inset 0 0 0 2px rgba(255, 255, 255, 0.1);
     transform: translateY(-1px);
-    width:100%;
     border: 1px solid rgba(255, 255, 255, 0.15);
+    width:100%;
+
 }
 
 button.inactive{
@@ -181,22 +187,24 @@ text-align: left;
 /* Password field styling */
 .password-field {
 position: relative;
-margin-bottom: 15px;
 }
 
 .password-input-container {
 position: relative;
 display: flex;
 align-items: center;
+width: 100%;
 }
 
 .password-input-container input {
 width: 100%;
+  flex: 1;
+  padding-right: 2.5rem;
 }
 
 .password-toggle-btn {
 position: absolute;
-right: 10px;
+right: -1.4rem;
 top: 50%;
 transform: translateY(-50%);
 background: none;

@@ -6,7 +6,7 @@
 
   /* Changed to light theme by default */
   color-scheme: light;
-  color: #213547;
+  color: #472121;
   background-color: #ffffff;
 
   font-synthesis: none;
@@ -21,6 +21,14 @@
   padding: 2rem;
   text-align: center;
 }
+
+#root.home-root {
+  margin-left: 0;
+  margin-right: 0;
+}
+
+
+html { overflow-y: scroll; }
 
 a {
   font-weight: 500;

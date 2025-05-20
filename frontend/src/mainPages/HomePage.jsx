@@ -15,7 +15,7 @@ const Home = () => {
   
   // Handle visualizing tests
   const handleVisualizeTests = () => {
-    navigate('/visualize'); // Navigate to visualization page
+    navigate('/nothing'); // Navigate to visualization page
   };
 
   // Handle adding new test results
@@ -25,24 +25,22 @@ const Home = () => {
 
   // Handle viewing complete history
   const handleViewHistory = () => {
-    navigate('/history'); // Navigate to history page
+    navigate('/nothing'); // Navigate to history page
   };
   
   return (
     <div className="home-page">
-
       
       <div className="home-container">
         
         <div className="section">
           <h2>Quick Actions</h2>
           <div className="actions-container">
-            <button className="action-button secondary" onClick={handleVisualizeTests}>
+            <button className="action-button" onClick={handleVisualizeTests}>
               Visualise tests
             </button>
             
-            <button className="action-button primary" onClick={handleAddTest}>
-              <span className="plus-icon">+</span>
+            <button className="action-button" onClick={handleAddTest}>
               Add new test results
             </button>
           </div>
@@ -54,7 +52,7 @@ const Home = () => {
         </div>
         
         <div className="history-section">
-          <button className="history-button" onClick={handleViewHistory}>
+          <button className="action-button" onClick={handleViewHistory}>
             Vezi istoric complet
           </button>
         </div>

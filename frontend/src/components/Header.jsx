@@ -31,12 +31,10 @@ const Header = () => {
       {/* Left Section */}
       <div className="container left-container">
         <img src={Logo} alt="Medical icon"/>
-        <button className="home-button" onClick={() => navigate('/home')}>Home</button>
-        <div className="button">
-          <button className="home-button" onClick={handleLogout}>
+        <button className="header-button" onClick={() => navigate('/home')}>Home</button>
+          <button className="header-button" onClick={handleLogout}>
             Log out
           </button>
-        </div>
       </div>
 
       {/* Right Section */}

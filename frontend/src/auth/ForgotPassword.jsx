@@ -46,7 +46,7 @@ const ForgotPassword = () => {
           {/* Navigation Tabs */}
           <nav>
             <button
-              type="button"
+              type="auth-button"
               onClick={() => navigate("/login")}
               className={`nav-button ${currentPath === "/login" ? "active" : "inactive"}`}
             >

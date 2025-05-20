@@ -1,11 +1,18 @@
 .home-page {
+  text-align: left;
   min-height: 100vh;
-  background-color: #f5f7fa;
+  background-color: #ffffff;
   display: flex;
   flex-direction: row;
-  align-items: left;
+  align-items: flex-start;
   padding-bottom: 40px;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+  font-size: 1.125rem;
+  margin-left: 0;
+  margin-right: 0;
+  margin-top: 40px;
 }
 
 .home-container {
@@ -41,16 +48,16 @@
 
 .actions-container {
   display: flex;
-  gap: 16px;
+  gap: 25px;
   flex-wrap: wrap;
 }
 
 
 
 
-button {
+.action-button {
   background : linear-gradient(135deg, #3B82F6 0%, #1E40AF 100%);
-  border:none;
+  border:1px solid #4f46e5;
   border-radius: 12px;
   box-shadow:0 2px 4px rgba(37,99,235,0.1);
   color:#fff;
@@ -60,15 +67,15 @@ button {
   font-weight: 500;
   letter-spacing: 0.3px;
   overflow:hidden;
-  padding: 16px 16px;
+  padding: 12px 16px;
   position:relative;
   transition: all 0.3s ease;
-  width:100%;
-  min-width: 100px;
+  width:47%;
+  min-width: 200px;
 }
 
-button:hover {
+.action-button:hover {
   border-color: #4f46e5;
-  border:#1E40AF;
+  border: 1px solid rgba(255, 255, 255, 0.15);
   box-shadow:0 4px 8px rgba(37,99,235,0.2);
 }
