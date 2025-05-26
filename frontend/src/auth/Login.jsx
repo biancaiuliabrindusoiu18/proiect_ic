@@ -12,8 +12,8 @@ const Login = () => {
   const [message, setMessage] = useState('');
   const [rememberMe, setRememberMe] = useState(false);
   const [countdown, setCountdown] = useState(3); // countdown for redirect
-    const [showPassword, setShowPassword] = useState(false);
-    const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
   const currentPath = location.pathname;

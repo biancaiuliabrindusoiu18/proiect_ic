@@ -53,7 +53,7 @@ const UserSchema = new mongoose.Schema({
   },
   analyses: [{
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'Analysis'  // Referencing the Analysis model
+    ref: 'Analyses'  // Referencing the Analyses model
   }],
   resetPasswordToken: String,    // Token for password reset
   resetPasswordExpire: Date     // Expiration date for the token

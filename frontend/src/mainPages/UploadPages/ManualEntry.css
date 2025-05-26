@@ -27,7 +27,7 @@
 .manual-entry-unit-input{  padding: 0.5rem;
   flex: 1 1 15%;
 }
-  .manual-entry-date-input{  padding: 0.5rem;
+.manual-entry-date-input{  padding: 0.5rem;
   flex: 1 1 20%;
 }
 .manual-entry-reference-type-select{  padding: 0.5rem;
@@ -50,7 +50,7 @@
   padding: 0.75rem 1.5rem;
   font-weight: bold;
   cursor: pointer;
-  margin-top:1rem;
+  margin-top:0;
   width:40%;
   margin-left: 3%;
 }
@@ -58,7 +58,7 @@
   padding: 0.75rem 1.5rem;
   font-weight: bold;
   cursor: pointer;
-  margin-top:1rem;
+  margin-top:0;
   width:40%;
   margin-right: 3%;
 }

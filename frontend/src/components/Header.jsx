@@ -16,7 +16,6 @@ const Header = () => {
     navigate('/login');
   };
 
-
   useEffect(() => {
     // Check both localStorage and sessionStorage
     const storedFirst_name = localStorage.getItem('first_name') || sessionStorage.getItem('first_name');

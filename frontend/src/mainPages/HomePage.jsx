@@ -4,14 +4,6 @@ import { useNavigate } from "react-router-dom";
 
 const Home = () => {
   const navigate = useNavigate();
-
-  // Check for existing token on page load
-  useEffect(() => {
-    const token = localStorage.getItem('token') || sessionStorage.getItem('token');
-    if (!token) {
-      navigate('/login'); // Redirect to login page if no token is found
-    }
-  }, [navigate]);
   
   // Handle visualizing tests
   const handleVisualizeTests = () => {
@@ -20,7 +12,7 @@ const Home = () => {
 
   // Handle adding new test results
   const handleAddTest = () => {
-    navigate('/upload-analysis'); // Navigate to upload analysis page
+    navigate('/upload-analyses'); // Navigate to upload analyses page
   };
 
   // Handle viewing complete history

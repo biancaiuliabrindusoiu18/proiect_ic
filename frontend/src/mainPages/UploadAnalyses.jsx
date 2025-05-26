@@ -1,18 +1,10 @@
 import { useEffect, useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import './UploadAnalysis.css';
+import './UploadAnalyses.css';
 
-const UploadAnalysis = () => {
+const UploadAnalyses = () => {
   const navigate = useNavigate();
-
-  // ✅ Redirect if not authenticated
-  useEffect(() => {
-    const token = localStorage.getItem('token') || sessionStorage.getItem('token');
-    if (!token) {
-      navigate('/login');
-    }
-  }, [navigate]);
 
   const [dragActive, setDragActive] = useState(false);
   const [file, setFile] = useState(null);
@@ -87,6 +79,8 @@ const UploadAnalysis = () => {
 
       setMessage(response.data.message);
       setData(response.data.data);
+      navigate('/verify-analyses', { state: { data: response.data.data } });
+
     } catch (error) {
       setMessage(error.response?.data?.message || 'A apărut o eroare.');
     } finally {
@@ -97,7 +91,7 @@ const UploadAnalysis = () => {
   
   return (
     <div className="upload-container">
-      <h2 className="upload-title">Upload Medical Analysis</h2>
+      <h2 className="upload-title">Upload Medical Analyses</h2>
       
       <div className="upload-sections">
         <div 
@@ -196,4 +190,4 @@ const UploadAnalysis = () => {
   );
 };
 
-export default UploadAnalysis;
+export default UploadAnalyses;

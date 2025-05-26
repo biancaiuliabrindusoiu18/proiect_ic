@@ -83,7 +83,7 @@ router.post('/login', async (req, res) => {
         let expiresIn = rememberMe ? '7d' : '1h'; // Set expiration time based on rememberMe
         const token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn });// Sign the token with a secret key and set expiration time
 
-        console.log('Login successful:', user.first_name, user.last_name, user.email, user.phone);
+        console.log('Login successful:', user.first_name, user.last_name, user.email);
 
         res.json({
           token,

@@ -4,8 +4,8 @@
   padding: 24px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
   width: 100%;
-  max-width: 548px;
-  min-width: 548px;
+  max-width: 600px;
+  min-width: 600px;
   margin: 0 auto;
 }
 
@@ -20,7 +20,7 @@
 .upload-sections {
   display: flex;
   justify-content: space-between;
-  gap: 24px;
+  gap: 50px;
   align-items: stretch;
 }
 
@@ -87,7 +87,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 16px;
+  gap: 8px;
   width: 100%;
   margin-top: auto;
 }

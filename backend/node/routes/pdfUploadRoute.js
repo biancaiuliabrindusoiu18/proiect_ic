@@ -29,7 +29,7 @@ router.post('/upload-pdf', upload.single('file'), async (req, res) => {
         console.log('Data received from FastAPI:', response.data);
 
         return res.status(200).json({
-            message: 'Analysis processed successfully.',
+            message: 'Analyses processed successfully.',
             data: response.data
         });
 

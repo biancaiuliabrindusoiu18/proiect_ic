@@ -15,3 +15,5 @@ backend/node/node_modules/
 #ignore environment files
 backend/node/.env
 backend/node/uploads/
+
+comenzi.txt

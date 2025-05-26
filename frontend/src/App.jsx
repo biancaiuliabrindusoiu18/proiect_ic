@@ -1,6 +1,6 @@
 import React from 'react';
 import { useEffect } from 'react';
-import { BrowserRouter as Router, Routes, Route, useLocation, matchPath  } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, useLocation, matchPath, useNavigate } from 'react-router-dom';
 import './index.css'
 import Login from './auth/Login';
 import Register from './auth/Register';
@@ -10,13 +10,31 @@ import HomePage from './mainPages/HomePage';
 import RegistrationSuccess from './auth/RegisterSuccess';
 import Header from './components/Header';
 import LandingPage from './LandingPage';
-import UploadAnalysis from './mainPages/UploadAnalysis';
+import UploadAnalyses from './mainPages/UploadAnalyses';
 import Nothing from './components/Nothing';
-import ManualEntry from './mainPages/ManualEntry';
+import ManualEntry from './mainPages/UploadPages/ManualEntry';
+import VerifyData from './mainPages/UploadPages/VerifyData';
+import { jwtDecode } from 'jwt-decode';
 
+
+const noTokenRoute = ['/login', '/register', '/forgot-password', '/reset-password/:token', '/register-success','/'];
+
+const checkTokenValidity = () => {
+  const token = localStorage.getItem('token') || sessionStorage.getItem('token');
+  if (!token) return false;
+
+  try {
+    const decoded = jwtDecode(token);
+    const now = Date.now() / 1000;
+    return decoded.exp && decoded.exp > now;
+  } catch (err) {
+    return false;
+  }
+};
 
 const Layout = ({ children }) => {
   const location = useLocation();
+  const navigate = useNavigate();
 
 useEffect(() => {
   const root = document.getElementById('root');
@@ -30,10 +48,23 @@ useEffect(() => {
   }
 }, [location]);
 
+useEffect(() => {
+    const isPublic = noTokenRoute.some((route) => matchPath({ path: route, end: true }, location.pathname));
+    const isTokenValid = checkTokenValidity();
 
-  const hideHeaderRoutes = ['/login', '/register', '/forgot-password', '/reset-password/:token', '/register-success','/'];
+    if (!isPublic && !isTokenValid) {
+      localStorage.removeItem('token');
+      sessionStorage.removeItem('token');
+      navigate('/login');
+    }
+    else if (isPublic && isTokenValid) {
+      navigate('/home');
+    }
+  }, [location, navigate]);
 
-  const shouldHideHeader = hideHeaderRoutes.some((route) =>
+
+  
+  const shouldHideHeader = noTokenRoute.some((route) =>
     matchPath({ path: route, end: true }, location.pathname)
   );
 
@@ -60,9 +91,10 @@ const App = () => {
         <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/reset-password/:token" element={<ResetPassword />} />
         <Route path="/home" element={<HomePage />} />
-        <Route path="/upload-analysis" element={<UploadAnalysis />} />
+        <Route path="/upload-analyses" element={<UploadAnalyses />} />
         <Route path="/nothing" element={<Nothing />} />
         <Route path="/manual-entry" element={<ManualEntry />} />
+        <Route path="/verify-analyses" element={<VerifyData />} />
         {/* Add other routes here */}
       </Routes>
       </Layout> 
