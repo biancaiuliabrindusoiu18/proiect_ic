@@ -144,11 +144,11 @@ router.get('/latest', authMiddleware, async (req, res) => {
 
 router.get('/by-name/:testName', authMiddleware, async (req, res) => {
   try {
-    const userId = req.userId;
+    const userId = new mongoose.Types.ObjectId(req.userId);
     const { testName } = req.params;
 
     const tests = await Analyses.find({
-      userId: mongoose.Types.ObjectId(userId),
+      userId: userId,
       test_name: testName
     }).sort({ test_date: 1 }); // cronologic
 

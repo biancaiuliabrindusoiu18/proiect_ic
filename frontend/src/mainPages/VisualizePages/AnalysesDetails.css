@@ -1,0 +1,370 @@
+/* Container principal pentru detaliile analizelor */
+.analyses-details-container {
+  min-height: 100vh;
+  background-color: #f9fafb;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+/* Header pentru pagina de detalii */
+.analyses-header {
+  background: white;
+  border-bottom: 1px solid #e5e7eb;
+  padding: 12px 16px;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.analyses-header-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 0 16px;
+}
+
+.analyses-header-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.analyses-back-button {
+  background: none;
+  border: none;
+  padding: 8px;
+  cursor: pointer;
+  border-radius: 6px;
+  color: #6b7280;
+  font-size: 18px;
+  transition: background-color 0.2s;
+}
+
+.analyses-back-button:hover {
+  background-color: #f3f4f6;
+}
+
+.analyses-header-title {
+  font-size: 18px;
+  font-weight: 500;
+  color: #111827;
+  margin: 0;
+}
+
+.analyses-header-right {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.analyses-icon-button {
+  background: none;
+  border: none;
+  padding: 8px;
+  cursor: pointer;
+  border-radius: 6px;
+  color: #6b7280;
+  font-size: 16px;
+  transition: background-color 0.2s;
+}
+
+.analyses-icon-button:hover {
+  background-color: #f3f4f6;
+}
+
+/* Main content wrapper - pe tot ecranul */
+.analyses-main-content {
+  width: 100%;
+  padding: 16px;
+}
+
+/* Chart section wrapper */
+.analyses-chart-wrapper {
+  margin-bottom: 24px;
+}
+
+/* Previous tests section specific pentru analyses details */
+.analyses-previous-tests {
+  background: white;
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  border: 1px solid #e5e7eb;;
+}
+
+.analyses-previous-tests-title {
+  font-size: 18px;
+  font-weight: 600;
+  color: #111827;
+  margin-bottom: 20px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid #f3f4f6;
+}
+
+.analyses-tests-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.analyses-test-item {
+  background: #fafbfc;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  padding: 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.analyses-test-item:hover {
+  background-color: #f0f9ff;
+  border-color: #bfdbfe;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.analyses-test-item-left {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.analyses-test-value {
+  font-weight: 600;
+  color: #111827;
+  font-size: 16px;
+}
+
+.analyses-test-date {
+  font-size: 14px;
+  color: #6b7280;
+}
+
+.analyses-test-item-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.analyses-test-status {
+  font-size: 14px;
+  font-weight: 500;
+  padding: 4px 8px;
+  border-radius: 4px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-size: 12px;
+}
+
+.analyses-test-status.normal {
+  color: #065f46;
+  background-color: #d1fae5;
+}
+
+.analyses-test-status.low {
+  color: #991b1b;
+  background-color: #fee2e2;
+}
+
+.analyses-test-status.high {
+  color: #92400e;
+  background-color: #fef3c7;
+}
+
+.analyses-chevron-icon {
+  color: #9ca3af;
+  width: 16px;
+  height: 16px;
+  transition: transform 0.2s;
+}
+
+.analyses-test-item:hover .analyses-chevron-icon {
+  transform: translateX(2px);
+  color: #6b7280;
+}
+
+/* Loading state specific pentru analyses */
+.analyses-loading-state {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 400px;
+  color: #6b7280;
+  font-size: 16px;
+  gap: 16px;
+}
+
+.analyses-loading-spinner {
+  width: 32px;
+  height: 32px;
+  border: 3px solid #f3f4f6;
+  border-top: 3px solid #3b82f6;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/* Error state specific pentru analyses */
+.analyses-error {
+  color: #dc2626;
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  border-radius: 8px;
+  padding: 20px;
+  margin: 16px;
+  text-align: center;
+  font-weight: 500;
+}
+
+.analyses-error-icon {
+  font-size: 24px;
+  margin-bottom: 8px;
+}
+
+/* Empty state */
+.analyses-empty-state {
+  text-align: center;
+  padding: 40px 20px;
+  color: #6b7280;
+}
+
+.analyses-empty-icon {
+  font-size: 48px;
+  margin-bottom: 16px;
+  opacity: 0.5;
+}
+
+.analyses-empty-title {
+  font-size: 18px;
+  font-weight: 500;
+  margin-bottom: 8px;
+  color: #374151;
+}
+
+.analyses-empty-description {
+  font-size: 14px;
+  color: #6b7280;
+}
+
+/* Stats summary section */
+.analyses-stats-summary {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.analyses-stat-card {
+  background: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  padding: 16px;
+  text-align: center;
+}
+
+.analyses-stat-value {
+  font-size: 24px;
+  font-weight: 700;
+  color: #111827;
+  margin-bottom: 4px;
+}
+
+.analyses-stat-label {
+  font-size: 12px;
+  color: #6b7280;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* Responsive design pentru analyses details */
+@media (max-width: 768px) {
+  .analyses-main-content {
+    padding: 12px;
+  }
+
+  .analyses-previous-tests {
+    padding: 16px;
+  }
+
+  .analyses-test-item {
+    padding: 12px;
+  }
+
+  .analyses-test-value {
+    font-size: 15px;
+  }
+
+  .analyses-test-date {
+    font-size: 13px;
+  }
+
+  .analyses-header-content {
+    padding: 0 8px;
+  }
+
+  .analyses-header-title {
+    font-size: 16px;
+  }
+
+  .analyses-stats-summary {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+}
+
+@media (max-width: 480px) {
+  .analyses-test-item {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .analyses-test-item-right {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .analyses-previous-tests {
+    padding: 12px;
+  }
+}
+
+/* Animation pentru intrarea elementelor */
+.analyses-test-item {
+  animation: fadeInUp 0.3s ease-out;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Focus states pentru accesibilitate */
+.analyses-test-item:focus {
+  outline: 2px solid #3b82f6;
+  outline-offset: 2px;
+}
+
+.analyses-back-button:focus,
+.analyses-icon-button:focus {
+  outline: 2px solid #3b82f6;
+  outline-offset: 2px;
+}
