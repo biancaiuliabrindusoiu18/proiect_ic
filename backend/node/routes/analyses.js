@@ -117,4 +117,53 @@ router.get('/recent', authMiddleware, async (req, res) => {
   }
 });
 
+router.get('/latest', authMiddleware, async (req, res) => {
+  try {
+    const userId = req.userId;
+    const objectUserId = new mongoose.Types.ObjectId(userId);
+
+    const latestAnalyses = await Analyses.aggregate([
+      { $match: { userId: objectUserId } },
+      { $sort: { test_date: -1 } },
+      {
+        $group: {
+          _id: "$test_name",
+          latest: { $first: "$$ROOT" }
+        }
+      },
+      { $replaceWith: "$latest" },
+      { $sort: { test_name: 1 } } // sortare alfabetică ascendentă
+    ]);
+
+    res.json(latestAnalyses);
+  } catch (err) {
+    console.error('Error in /analyses/latest:', err);
+    res.status(500).json({ msg: 'Server error' });
+  }
+});
+
+router.get('/by-name/:testName', authMiddleware, async (req, res) => {
+  try {
+    const userId = req.userId;
+    const { testName } = req.params;
+
+    const tests = await Analyses.find({
+      userId: mongoose.Types.ObjectId(userId),
+      test_name: testName
+    }).sort({ test_date: 1 }); // cronologic
+
+    if (!tests.length) {
+      return res.status(404).json({ msg: `No tests found for ${testName}` });
+    }
+
+    res.json(tests);
+  } catch (err) {
+    console.error('Error in /analyses/by-name/:testName:', err);
+    res.status(500).json({ msg: 'Server error' });
+  }
+});
+
+
+
+
 module.exports = router;

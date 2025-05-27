@@ -44,6 +44,9 @@ const Home = () => {
         <div className="section">
           <h2>Quick Actions</h2>
           <div className="actions-container">
+            <button className="action-button" onClick={() => navigate('/all-analyses')}>
+              Visualize All 
+            </button>
             <button className="action-button" onClick={() => navigate('/upload-analyses')}>
               Add new test results
             </button>
