@@ -346,3 +346,41 @@
     padding: 0 8px;
   }
 }
+
+.range-bar-container.label-mode {
+  position: relative;
+  height: 10px;
+  border-radius: 5px;
+  overflow: hidden;
+  margin-top: 8px;
+  background: transparent;
+}
+
+.range-bar-container.label-mode .range-bar {
+  display: flex;
+  width: 100%;
+  height: 100%;
+}
+
+.half-bar {
+  flex: 1;
+  height: 100%;
+}
+
+.half-bar.negative {
+  background-color: #10b981; /* VERDE (Negativ) pe stânga acum */
+}
+
+.half-bar.positive {
+  background-color: #ef4444; /* ROȘU (Pozitiv) pe dreapta acum */
+}
+
+.current-indicator {
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: #000000;
+}
