@@ -13,6 +13,7 @@ const AnalysesDetails = () => {
   const [unit, setUnit] = useState("")
   const [min, setMin] = useState(null)
   const [max, setMax] = useState(null)
+  const [label, setLabel] = useState(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState("")
   const [previousTests, setPreviousTests] = useState([])
@@ -36,21 +37,31 @@ useEffect(() => {
 
       const refMin = res.data[0].reference_range?.min ?? null
       const refMax = res.data[0].reference_range?.max ?? null
+      const refLabel = res.data[0].reference_range?.label ?? null
+      setLabel(refLabel)
       setMin(refMin)
       setMax(refMax)
       setUnit(res.data[0].test_unit)
 
       const previousTestsData = res.data
         .map((test) => {
-          const value = Number.parseFloat(test.test_value)
-          const refMin = test.reference_range?.min
-          const refMax = test.reference_range?.max
-
           let status = "Unknown"
-          if (refMin != null && refMax != null) {
-            status = value < refMin ? "Low" : value > refMax ? "High" : "Normal"
+          if(test.reference_range?.min != null || test.reference_range?.max != null) {
+            const refMin = Number.parseFloat(test.reference_range?.min)
+            const refMax =Number.parseFloat( test.reference_range?.max)
+            const value = Number.parseFloat(test.test_value)
+            if (refMin != null && refMax != null) {
+               status = value < refMin ? "Low" : value > refMax ? "High" : "Normal"
+            }
+            if(refMin == null)
+                status = value < refMax ? "Normal" : "High"
+            if(refMax == null)
+            status = value > refMin ? "Normal" : "Low"
+          } 
+          if(test.reference_range?.label) {
+            status = test.reference_range.label.toLowerCase() === test.test_value.toLowerCase() ? "Normal" : "Critical"
           }
-
+        
           return {
             value: `${test.test_value} ${test.test_unit}`,
             date: new Date(test.test_date).toLocaleDateString("en-US", {
@@ -95,9 +106,8 @@ useEffect(() => {
   return (
     <div>
     <div className="main-content">
-      <AnalysesChart data={data} testName={testName} unit={unit} min={min} max={max} />
-        <button onClick={()=>navigate("/all-analyses")}>Back to all</button>
-
+      <AnalysesChart data={data} testName={testName} unit={unit} min={min} max={max} label={label} />
+        
       {/* Previous Tests Section */}
       
         <div className="previous-tests">

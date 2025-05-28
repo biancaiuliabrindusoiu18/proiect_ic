@@ -36,29 +36,35 @@ const CustomYAxisTick = ({ x, y, payload, min, max }) => {
   )
 }
 
-const AnalysesChart = ({ data, testName, unit, min, max }) => {
+const AnalysesChart = ({ data, testName, unit, min, max ,label}) => {
   const currentValue = data?.[data.length - 1]?.value ?? 0
   const currentDate = data?.[data.length - 1]?.date ?? ""
+    let isNormal, statusText, statusClass, clampedPosition, yMin, yMax, yTicks
 
-  const isNormal = currentValue >= min && currentValue <= max
-  const statusText = isNormal ? "Normal Range" : currentValue < min ? "Low" : "High"
-  const statusClass = isNormal ? "normal" : currentValue < min ? "low" : "high"
+    const values = data.map((d) => d.value)
+    const actualMin = Math.min(...values, min ?? 0)
+    const actualMax = Math.max(...values, max ?? 0)
+    const range = actualMax - actualMin
+    const padding = range * 0.5
 
-  // Referință vizuală pe bară
-  const indicatorPosition = ((currentValue - min) / (max - min)) * 100
-  const clampedPosition = Math.max(0, Math.min(100, indicatorPosition))
-
-  // Dinamic: determinăm domeniul Y real
-  const values = data.map((d) => d.value)
-  const actualMin = Math.min(...values, min)
-  const actualMax = Math.max(...values, max)
-  const range = actualMax - actualMin
-  const padding = range * 0.2
-
-  const yMin = actualMin - padding
-  const yMax = actualMax + padding
-
-  const yTicks = [...new Set([yMin, min, 0, max, yMax].filter(v => v >= yMin && v <= yMax))]
+    if (label) {
+    isNormal = currentValue?.toLowerCase?.() === label.toLowerCase()
+    statusText = isNormal ? "Normal Range" : "Critical"
+    statusClass = isNormal ? "normal" : "critical"
+    clampedPosition = isNormal ? 50 : 100
+    yMin = actualMin - padding
+    yMax = actualMax + padding
+    yTicks = [...new Set([yMin, min, 0, max, yMax].filter(v => v >= yMin && v <= yMax))]
+    } else {
+    isNormal = currentValue >= min && currentValue <= max
+    statusText = isNormal ? "Normal Range" : currentValue < min ? "Low" : "High"
+    statusClass = isNormal ? "normal" : currentValue < min ? "low" : "high"
+    clampedPosition = ((currentValue - min) / (max - min)) * 100
+    clampedPosition = Math.max(0, Math.min(100, clampedPosition))
+    yMin = actualMin - padding
+    yMax = actualMax + padding
+    yTicks = [...new Set([yMin, min, 0, max, yMax].filter(v => v >= yMin && v <= yMax))]
+    }
 
   return (
     <div className="hemoglobin-container">
@@ -139,7 +145,10 @@ const AnalysesChart = ({ data, testName, unit, min, max }) => {
                   dataKey="value"
                   stroke="#374151"
                   strokeWidth={2}
-                  dot={(props) => <CustomDot {...props} min={min} max={max} />}
+                  dot={(props) => {
+                    const { key, ...rest } = props
+                    return <CustomDot key={key} {...rest} min={min} max={max} />
+                    }}
                   activeDot={{ r: 6, fill: "#374151" }}
                 />
               </LineChart>
