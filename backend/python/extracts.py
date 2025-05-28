@@ -57,8 +57,41 @@ def data_recoltare_detect(lines):
                         data_recoltare = date.group(0)
                         break
 
+    luni = {
+        r'\b(ianuarie|ian)\b': '01',
+        r'\b(februarie|feb)\b': '02',
+        r'\b(martie|mar)\b': '03',
+        r'\b(aprilie|apr)\b': '04',
+        r'\b(mai)\b': '05',
+        r'\b(iunie|iun)\b': '06',
+        r'\b(iulie|iul)\b': '07',
+        r'\b(august|aug)\b': '08',
+        r'\b(septembrie|sept|sep)\b': '09',
+        r'\b(octombrie|oct)\b': '10',
+        r'\b(noiembrie|noi|nov)\b': '11',
+        r'\b(decembrie|dec)\b': '12',
+    }
+
+    # Înlocuiește lunile cu cifre
+    for luna_regex, cifra in luni.items():
+        data_recoltare = re.sub(luna_regex, cifra, data_recoltare, flags=re.IGNORECASE)
+
+    data_recoltare=data_recoltare.replace(' ', '.').replace('/', '.').replace('..', '.')
+    data_recoltare=data_recoltare.strip()
 
     return data_recoltare
+
+
+# text="recoltare 25 august 2025"
+# print(data_recoltare_detect(text.splitlines()))  # Ar trebui să returneze '25/03/2025'
+
+# text="recoltare 25. aug. 2025"
+# print(data_recoltare_detect(text.splitlines()))  # Ar trebui să returneze '25/03/2025'
+
+# text="recoltare 25.08.2025"
+# print(data_recoltare_detect(text.splitlines()))  # Ar trebui să returneze '25/03/2025'
+# text="recoltare 25/08/2025"
+# print(data_recoltare_detect(text.splitlines()))  # Ar trebui să returneze '25/03/2025'
 
 
 
@@ -405,7 +438,7 @@ def parse_before_mode(lines):
 
 def test_parse_before_mode():
     text_before = """
-    data recoltare 25/03/2025
+    data recoltare 25 august 2025
     [28 - 100]
     AMILAZA SERICA
     =   102
