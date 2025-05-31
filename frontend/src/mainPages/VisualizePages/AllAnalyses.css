@@ -77,32 +77,6 @@ body {
   color: #374151;
 }
 
-.add-test-button {
-  padding: 8px 16px;
-  border: 1px solid #dbeafe;
-  background-color: white;
-  color: #3b82f6;
-  border-radius: 6px;
-  cursor: pointer;
-  font-size: 14px;
-  font-weight: 500;
-  transition: all 0.2s ease;
-  white-space: nowrap;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.add-test-button:hover {
-  background-color: #eff6ff;
-  border-color: #bfdbfe;
-}
-
-.add-test-button:focus {
-  outline: 2px solid #3b82f6;
-  outline-offset: 2px;
-}
-
 .plus-icon {
   font-size: 16px;
   line-height: 1;
@@ -161,9 +135,7 @@ body {
     justify-content: center;
   }
 
-  .add-test-button {
-    justify-content: center;
-  }
+
 }
 
 @media (max-width: 480px) {

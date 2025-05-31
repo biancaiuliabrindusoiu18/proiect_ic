@@ -155,16 +155,16 @@ const Login = () => {
 
 
             <div className="auth-options">
-              <div className="remember-me">
-                <label htmlFor="rememberMe" className="text-sm text-gray-700">
-                  Stay logged in
-                </label>
+              <div className="remember-me" onClick={() => setRememberMe(!rememberMe)}>
                 <input
                   type="checkbox"
                   id="rememberMe"
                   checked={rememberMe}
                   onChange={() => setRememberMe(!rememberMe)}
                 />
+                <label htmlFor="rememberMe">
+                  Stay logged in
+                </label>
               </div>
 
               <div className="forgot-password">
