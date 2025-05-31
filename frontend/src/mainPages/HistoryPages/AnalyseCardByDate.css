@@ -1,0 +1,102 @@
+.analysis-by-date-card {
+  background: white;
+  border-radius: 12px;
+  padding: 24px;
+  margin-bottom: 16px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  border: 1px solid #e5e7eb;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+.analysis-by-date-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.analysis-by-date-title {
+  font-size: 18px;
+  font-weight: 600;
+  color: #111827;
+}
+
+.analysis-by-date-date {
+  font-size: 14px;
+  color: #6b7280;
+}
+
+.analysis-by-date-value {
+  font-size: 28px;
+  font-weight: 700;
+  color: #111827;
+  margin-bottom: 16px;
+}
+
+.analysis-by-date-reference-range {
+  margin-top: 8px;
+  margin-bottom: 12px;
+}
+
+.analysis-by-date-range-header {
+  display: flex;
+  justify-content: space-between;
+  font-size: 12px;
+  color: #6b7280;
+  margin-bottom: 8px;
+}
+
+.analysis-by-date-bar-container {
+  position: relative;
+  width: 100%;
+  height: 8px;
+  background-color: #e5e7eb;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.analysis-by-date-bar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #10b981;
+  border-radius: 4px;
+}
+
+.analysis-by-date-indicator {
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: #000000;
+}
+
+.analysis-by-date-bar-container.label-mode {
+  height: 10px;
+  border-radius: 5px;
+  background: transparent;
+  margin-top: 8px;
+}
+
+.analysis-by-date-bar-container.label-mode .analysis-by-date-bar {
+  display: flex;
+  width: 100%;
+  height: 100%;
+}
+
+.analysis-by-date-half-bar {
+  flex: 1;
+  height: 100%;
+}
+
+.analysis-by-date-half-bar.negative {
+  background-color: #10b981;
+}
+
+.analysis-by-date-half-bar.positive {
+  background-color: #ef4444;
+}

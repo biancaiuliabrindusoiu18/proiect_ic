@@ -5,19 +5,36 @@ grid-template-columns: repeat(3, 1fr);
   gap: 24px;
   margin-top: 32px;
 }
+.analysis-card-wrapper {
+  background: linear-gradient(135deg, #3B82F6, #1E40AF);
+  border-radius: 16px;
+  padding: 2px; /* grosimea borderului */
+  display: inline-block;
+}
 
 .analysis-card {
-  background: white;
-  border: 1px solid #e5e7eb;
-  border-radius: 8px;
+  background-color: white;
+  border-radius: 14px;
   padding: 24px;
-  transition: box-shadow 0.2s ease;
-  position: relative;
+  height: 240px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  transition: box-shadow 0.2s ease, transform 0.2s ease;
 }
 
 .analysis-card:hover {
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  box-shadow: 0 0 12px rgba(59, 130, 246, 0.3);
+  transform: translateY(-2px);
 }
+
+
+.analysis-card:hover {
+  box-shadow: 0 0 12px rgba(59, 130, 246, 0.3);
+  transform: translateY(-2px);
+}
+
 
 .card-header {
   display: flex;

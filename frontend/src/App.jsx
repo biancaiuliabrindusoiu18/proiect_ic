@@ -16,8 +16,8 @@ import ManualEntry from './mainPages/UploadPages/ManualEntry';
 import VerifyData from './mainPages/UploadPages/VerifyData';
 import { jwtDecode } from 'jwt-decode';
 import AllAnalyses from './mainPages/VisualizePages/AllAnalyses';
-
 import AnalysisDetails from './mainPages/VisualizePages/AnalysesDetails';
+import AnalysesByDate from './mainPages/HistoryPages/AnalysesByDate';
 
 const noTokenRoute = ['/login', '/register', '/forgot-password', '/reset-password/:token', '/register-success','/'];
 
@@ -99,6 +99,7 @@ const App = () => {
         <Route path="/verify-analyses" element={<VerifyData />} />
         <Route path="/all-analyses" element={<AllAnalyses />} />
         <Route path="/analyses/:testName" element={<AnalysisDetails />} />
+        <Route path="/tests-by-date/:date" element={<AnalysesByDate />} />
         {/* Add other routes here */}
       </Routes>
       </Layout> 

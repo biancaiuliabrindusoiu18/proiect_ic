@@ -102,7 +102,7 @@ router.get('/recent', authMiddleware, async (req, res) => {
         }
       },
       { $sort: { _id: -1 } }, // cele mai recente zile primele
-      { $limit: 3 }
+      
     ]);
 
     if (!recentGrouped.length) {
@@ -117,6 +117,7 @@ router.get('/recent', authMiddleware, async (req, res) => {
   }
 });
 
+// get latest analyses for each test name
 router.get('/latest', authMiddleware, async (req, res) => {
   try {
     const userId = req.userId;
@@ -142,6 +143,7 @@ router.get('/latest', authMiddleware, async (req, res) => {
   }
 });
 
+// get all analyses by test name
 router.get('/by-name/:testName', authMiddleware, async (req, res) => {
   try {
     const userId = new mongoose.Types.ObjectId(req.userId);
@@ -159,6 +161,34 @@ router.get('/by-name/:testName', authMiddleware, async (req, res) => {
     res.json(tests);
   } catch (err) {
     console.error('Error in /analyses/by-name/:testName:', err);
+    res.status(500).json({ msg: 'Server error' });
+  }
+});
+
+
+// get all analyses for a specific date
+router.get('/by-date/:date', authMiddleware, async (req, res) => {
+  try {
+    const userId = req.userId;
+    const formattedDate = req.params.date; // e.g. "27.05.2025"
+
+    // convert to ISO date range (start of day to end of day)
+    const [day, month, year] = formattedDate.split('.');
+    const start = new Date(`${year}-${month}-${day}T00:00:00`);
+    const end = new Date(`${year}-${month}-${day}T23:59:59`);
+
+    const tests = await Analyses.find({
+      userId: new mongoose.Types.ObjectId(userId),
+      test_date: { $gte: start, $lte: end }
+    }).sort({ test_name: 1 });
+
+    if (!tests.length) {
+      return res.status(404).json({ msg: `No tests found for ${formattedDate}` });
+    }
+
+    res.json(tests);
+  } catch (err) {
+    console.error('Error in /analyses/by-date/:date', err);
     res.status(500).json({ msg: 'Server error' });
   }
 });

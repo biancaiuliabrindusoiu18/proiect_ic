@@ -1,0 +1,17 @@
+   .analyses-by-date-container {
+  max-width: 1000px;
+  margin: 40px auto;
+  padding: 0 20px;
+}
+
+.analyses-by-date-container h2 {
+  font-size: 24px;
+  margin-bottom: 24px;
+  color: #1f2937;
+}
+
+.analysis-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}

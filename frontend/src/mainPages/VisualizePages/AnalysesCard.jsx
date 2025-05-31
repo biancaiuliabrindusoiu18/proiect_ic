@@ -42,6 +42,7 @@ const AnalysisCard = ({ analysis }) => {
   );
 
   return (
+    <div className="card-gradient-wrapper">
     <div className="analysis-card" onClick={() => navigate(`/analyses/${encodeURIComponent(analysis.test_name)}`)}>
       <div className="card-header">
         <div className="card-info">
@@ -61,6 +62,7 @@ const AnalysisCard = ({ analysis }) => {
           <span className="test-unit"> {analysis.test_unit}</span>
         </p>
       </div>
+    </div>
     </div>
   );
 };
