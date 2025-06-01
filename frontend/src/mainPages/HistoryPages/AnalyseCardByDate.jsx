@@ -1,4 +1,5 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import "./AnalyseCardByDate.css";
 
 const AnalyseCardByDate = ({ test }) => {
@@ -38,8 +39,10 @@ const AnalyseCardByDate = ({ test }) => {
     statusText = isNormal ? "Normal" : "High";
   }
 
+  const navigate = useNavigate();
+
   return (
-    <div className="analysis-by-date-card">
+    <div className="analysis-by-date-card"onClick={() => navigate(`/analyses/${encodeURIComponent(test_name)}`)}>
       <div className="analysis-by-date-header">
       </div>
 
