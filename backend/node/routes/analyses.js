@@ -88,21 +88,27 @@ router.get('/all', authMiddleware, async (req, res) => {
 router.get('/recent', authMiddleware, async (req, res) => {
   try {
     const userId = req.userId; // string
-
     const objectUserId = new mongoose.Types.ObjectId(userId);
 
     const recentGrouped = await Analyses.aggregate([
-      { $match: { userId: objectUserId } },  // filtrare corectă după ObjectId
+      { $match: { userId: objectUserId } },
+      { $sort: { test_date: -1 } }, // Sort by actual date first
       {
         $group: {
           _id: {
-            $dateToString: { format: "%d.%m.%Y", date: "$test_date" }
+            date_string: { $dateToString: { format: "%d.%m.%Y", date: "$test_date" } },
+            date_value: "$test_date" // Keep the actual date for sorting
           },
           tests: { $push: "$$ROOT" }
         }
       },
-      { $sort: { _id: -1 } }, // cele mai recente zile primele
-      
+      { $sort: { "_id.date_value": -1 } }, // Sort by actual date value
+      {
+        $project: {
+          _id: "$_id.date_string", // Return only the formatted date string as _id
+          tests: 1
+        }
+      }
     ]);
 
     if (!recentGrouped.length) {
