@@ -1,5 +1,5 @@
 
-+ # Keep track of your health //not official name yet
++ # MedTrack
 -----------------------------------------------------
 + ## Problem solving:
  Aplicatia rezolva problema gestionarii si monitorizarii analizelor medicale printr-o platforma centralizata care afiseaza progresul utilizatorului in timp. In loc sa caute rezultate vechi prin e-mailuri sau hartii, utilizatorul are toate datele organizate intr-un singur loc, cu grafice intuitive si notificari pentru analize viitoare.
